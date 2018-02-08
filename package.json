@@ -1,0 +1,13 @@
+{
+  "name": "react-activestorage-provider",
+  "version": "0.0.1",
+  "description":
+    "A React component that allows easy file upload using ActiveStorage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["react", "rails", "activestorage", "file", "upload"],
+  "author": "Cameron Bothner",
+  "license": "MIT"
+}
