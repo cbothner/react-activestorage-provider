@@ -1,9 +1,14 @@
 {
   "name": "react-activestorage-provider",
   "version": "0.0.1",
-  "description":
-    "A React component that allows easy file upload using ActiveStorage",
-  "keywords": ["react", "rails", "activestorage", "file", "upload"],
+  "description": "A React component that allows easy file upload using ActiveStorage",
+  "keywords": [
+    "react",
+    "rails",
+    "activestorage",
+    "file",
+    "upload"
+  ],
   "author": "Cameron Bothner",
   "license": "MIT",
   "repository": {
@@ -27,6 +32,7 @@
     "babel-core": "^6.26.0",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "flow-bin": "^0.65.0",
@@ -38,5 +44,7 @@
   "peerDependencies": {
     "react": "^0.14.9 || ^15.0.0 || ^16.0.0"
   },
-  "files": ["dist"]
+  "files": [
+    "dist"
+  ]
 }
