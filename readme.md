@@ -39,14 +39,14 @@ npm install --save react-activestorage-provider
         upload =>
           upload.state === 'uploading' ? (
             <p>
-              Uploading ${upload.file.name}: ${upload.progress}%
+              Uploading {upload.file.name}: {upload.progress}%
             </p>
           ) : upload.state === 'error' ? (
             <p>
-              Error uploading ${upload.file.name}: ${upload.error}
+              Error uploading {upload.file.name}: {upload.error}
             </p>
           ) : (
-            <p>Finished uploading ${upload.file.name}</p>
+            <p>Finished uploading {upload.file.name}</p>
           )
       )}
     </div>
