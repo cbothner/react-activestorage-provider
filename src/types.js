@@ -3,10 +3,10 @@
  */
 
 export type ActiveStorageFileUpload =
-  | { state: 'waiting', file: File }
-  | { state: 'uploading', file: File, progress: number }
-  | { state: 'error', file: File, error: string }
-  | { state: 'finished', file: File }
+  | { state: 'waiting', id: string, file: File }
+  | { state: 'uploading', id: string, file: File, progress: number }
+  | { state: 'error', id: string, file: File, error: string }
+  | { state: 'finished', id: string, file: File }
 
 export type Endpoint = {
   path: string,
