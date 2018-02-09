@@ -14,35 +14,47 @@ import csrfHeader from './csrfHeader'
 
 const CONVENTIONAL_DIRECT_UPLOADS_PATH = '/rails/active_storage/direct_uploads'
 
+export type RenderProps = {
+  handleUpload: FileList => void /* call to initiate an upload */,
+  ready: boolean /* false while any file is uploading */,
+  uploads: ActiveStorageFileUpload[] /* uploads in progress */,
+}
+
 export type ActiveStorageFileUpload =
   | { state: 'uploading', file: File, progress: number }
   | { state: 'error', file: File, error: string }
   | { state: 'finished', file: File }
 
-type ActiveStorageState = {
-  onSubmit: FileList => void,
-  files: ActiveStorageFileUpload[]
-}
-
 class ActiveStorageProvider extends React.Component<
   {
-    attribute: string,
-    directUploadsPath?: string,
-    endpoint: string,
+    endpoint: {
+      path: string,
+      model: string,
+      attribute: string,
+      method: string,
+    },
     multiple?: boolean,
-    onBeforeBlobRequest?: { id: string, file: File, xhr: XMLHttpRequest },
-    onBeforeStorageRequest?: { id: string, file: File, xhr: XMLHttpRequest },
+    onBeforeBlobRequest?: ({
+      id: string,
+      file: File,
+      xhr: XMLHttpRequest,
+    }) => mixed,
+    onBeforeStorageRequest?: ({
+      id: string,
+      file: File,
+      xhr: XMLHttpRequest,
+    }) => mixed,
     onSubmit: (Promise<Response>) => mixed,
-    render: ActiveStorageState => React.Node
+    render: RenderProps => React.Node,
   },
   {
     uploading: boolean,
-    files: { [string]: ActiveStorageFileUpload }
+    files: { [string]: ActiveStorageFileUpload },
   }
 > {
   state = {
     uploading: false,
-    files: {}
+    files: {},
   }
 
   form: ?HTMLFormElement
@@ -82,11 +94,11 @@ class ActiveStorageProvider extends React.Component<
     const formData = new FormData(form)
 
     this.props.onSubmit(
-      fetch(this.props.endpoint, {
+      fetch(this.props.endpoint.path, {
         credentials: 'same-origin',
-        method: 'PUT',
+        method: this.props.endpoint.method,
         body: formData,
-        headers: new Headers(csrfHeader())
+        headers: new Headers(csrfHeader()),
       })
     )
   }
@@ -94,14 +106,15 @@ class ActiveStorageProvider extends React.Component<
   render() {
     const { files } = this.state
     return this.props.render({
-      onSubmit: this.handleChooseFiles,
-      files: Object.keys(files).map(key => files[key])
+      handleUpload: this.handleChooseFiles,
+      ready: !this.state.uploading,
+      uploads: Object.keys(files).map(key => files[key]),
     })
   }
 
   _createForm() {
     const form = document.createElement('form')
-    form.action = this.props.endpoint
+    form.action = this.props.endpoint.path
     form.enctype = 'multipart/form-data'
     form.method = 'post'
 
@@ -114,13 +127,17 @@ class ActiveStorageProvider extends React.Component<
   _createFileInput() {
     const input = document.createElement('input')
     input.type = 'file'
-    input.dataset.directUploadUrl =
-      this.props.directUploadsPath || CONVENTIONAL_DIRECT_UPLOADS_PATH
-    input.name = this.props.attribute
+    input.dataset.directUploadUrl = CONVENTIONAL_DIRECT_UPLOADS_PATH
+    input.name = this._inputName()
     input.multiple = Boolean(this.props.multiple)
 
     this.input = input
     return input
+  }
+
+  _inputName() {
+    const { attribute, model } = this.props.endpoint
+    return `${model.toLowerCase()}[${attribute}]`
   }
 
   _submitForm() {
