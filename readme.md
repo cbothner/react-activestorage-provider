@@ -37,7 +37,9 @@ npm install --save react-activestorage-provider
 
       {uploads.map(
         upload =>
-          upload.state === 'uploading' ? (
+          upload.state === 'waiting' ? (
+            <p>Waiting to upload {upload.file.name}</p>
+          ) : upload.state === 'uploading' ? (
             <p>
               Uploading {upload.file.name}: {upload.progress}%
             </p>
@@ -79,6 +81,7 @@ type RenderProps = {
 }
 
 type ActiveStorageFileUpload =
+  | { state: 'waiting', file: File }
   | { state: 'uploading', file: File, progress: number }
   | { state: 'error', file: File, error: string }
   | { state: 'finished', file: File }

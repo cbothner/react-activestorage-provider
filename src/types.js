@@ -3,6 +3,7 @@
  */
 
 export type ActiveStorageFileUpload =
+  | { state: 'waiting', file: File }
   | { state: 'uploading', file: File, progress: number }
   | { state: 'error', file: File, error: string }
   | { state: 'finished', file: File }
