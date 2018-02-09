@@ -29,7 +29,7 @@ type Props = {
     file: File,
     xhr: XMLHttpRequest,
   }) => mixed,
-  onSubmit: (Promise<Response>) => mixed,
+  onSubmit: Object => mixed,
   render: RenderProps => React.Node,
 }
 type State = {
@@ -78,14 +78,7 @@ class ActiveStorageProvider extends React.Component<Props, State> {
 
       const formData = new FormData(form)
 
-      this.props.onSubmit(
-        fetch(this.props.endpoint.path, {
-          credentials: 'same-origin',
-          method: this.props.endpoint.method,
-          body: formData,
-          headers: new Headers(csrfHeader()),
-        })
-      )
+      this._hitEndpoint(formData).then(this.props.onSubmit)
 
       this._disconnect()
       this._connect()
@@ -132,6 +125,15 @@ class ActiveStorageProvider extends React.Component<Props, State> {
     if (this.virtualForm == null) return
     this.virtualForm.deconstruct()
     delete this.virtualForm
+  }
+
+  _hitEndpoint(formData: FormData): Promise<Object> {
+    return fetch(this.props.endpoint.path, {
+      credentials: 'same-origin',
+      method: this.props.endpoint.method,
+      body: formData,
+      headers: new Headers(csrfHeader()),
+    }).then(r => r.json())
   }
 }
 

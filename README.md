@@ -22,11 +22,7 @@ npm install --save react-activestorage-provider
     attribute: 'avatar',
     method: 'PUT',
   }}
-  onSubmit={promise =>
-    promise
-      .then(response => response.json())
-      .then(user => this.setState({ avatar: user.avatar }))
-  }
+  onSubmit={user => this.setState({ avatar: user.avatar })}
   render={({ handleUpload, uploads, ready }) => (
     <div>
       <input
@@ -66,7 +62,7 @@ These are your options for configuring ActiveStorageProvider.
 | `multiple`               | `boolean`<br/>Whether the component should accept multiple files. If true, the model should use `has_many_attached`.       |
 | `onBeforeBlobRequest`    | `({ id: string, file: File, xhr: XMLHttpRequest }) => mixed`<br />A callback that allows you to modify the blob request    |
 | `onBeforeStorageRequest` | `({ id: string, file: File, xhr: XMLHttpRequest }) => mixed`<br />A callback that allows you to modify the storage request |
-| `onSubmit`\*             | `(Promise<Response>) => mixed`<br />A callback for the server response to the upload                                       |
+| `onSubmit`\*             | `Object => mixed`<br />A callback for the server response to the upload                                                    |
 | `render`\*               | `RenderProps => React.Node`<br />Render props                                                                              |
 
 ### `RenderProps`

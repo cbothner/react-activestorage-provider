@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+* Parses the server response as JSON automatically and calls `onSubmit` with the contents of the response body
+
 ## 0.0.1 — 2018-02-09
 
 ### Added
