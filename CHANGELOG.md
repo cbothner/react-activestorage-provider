@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.0.2] — 2018-02-09
+
 ### Changed
 
 * Parses the server response as JSON automatically and calls `onSubmit` with the contents of the response body
@@ -17,4 +19,5 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 * A component that handles the direct upload of a file to an ActiveStorage service and calls render props with arguments that let you build your own upload widget.
 
-[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.0.1...HEAD
+[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/cbothner/react-activestorage-provider/compare/v0.0.1...v0.0.2
