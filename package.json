@@ -19,10 +19,11 @@
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && npm run copy-flow-types",
     "start": "rollup -c -w",
     "prepare": "npm run build",
     "predeploy": "cd example && npm install && npm run build",
+    "copy-flow-types": "flow-copy-source src dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -36,6 +37,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "flow-bin": "^0.65.0",
+    "flow-copy-source": "^1.3.0",
     "react": "^0.14.9 || ^15.0.0 || ^16.0.0",
     "rollup": "^0.55.3",
     "rollup-plugin-babel": "^3.0.3",
