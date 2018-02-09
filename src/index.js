@@ -132,7 +132,10 @@ class ActiveStorageProvider extends React.Component<Props, State> {
       credentials: 'same-origin',
       method: this.props.endpoint.method,
       body: formData,
-      headers: new Headers(csrfHeader()),
+      headers: new Headers({
+        Accept: 'application/json',
+        ...csrfHeader(),
+      }),
     }).then(r => r.json())
   }
 }

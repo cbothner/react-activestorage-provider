@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Changed
 
 * Parses the server response as JSON automatically and calls `onSubmit` with the contents of the response body
+* Uses `Accept: 'application/json'` so you don’t need to end `endpoint.path` with `.json`
 
 ## 0.0.1 — 2018-02-09
 
