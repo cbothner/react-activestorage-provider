@@ -20,7 +20,7 @@ class VirtualForm {
   props: Props
 
   _input: HTMLInputElement
-  _submitButton: HTMLButtonElement
+  _submitButton: HTMLInputElement
 
   form: HTMLFormElement
 
@@ -65,10 +65,10 @@ class VirtualForm {
   }
 
   _createSubmitButton() {
-    const button = document.createElement('input')
-    button.type = 'submit'
-    button.style.display = 'none'
-    return button
+    this._submitButton = document.createElement('input')
+    this._submitButton.type = 'submit'
+    this._submitButton.style.display = 'none'
+    return this._submitButton
   }
 
   _inputName() {
