@@ -28,7 +28,7 @@ class VirtualForm {
     this.props = props
 
     this._createForm()
-    this._appendForm()
+    this._attachForm()
 
     this.form.addEventListener('submit', props.onSubmit)
   }
@@ -39,7 +39,7 @@ class VirtualForm {
   }
 
   deconstruct() {
-    document.body && document.body.removeChild(this.form)
+    this._detachForm()
   }
 
   _createForm() {
@@ -76,8 +76,12 @@ class VirtualForm {
     return `${model.toLowerCase()}[${attribute}]`
   }
 
-  _appendForm() {
+  _attachForm() {
     document.body && document.body.appendChild(this.form)
+  }
+
+  _detachForm() {
+    document.body && document.body.removeChild(this.form)
   }
 }
 

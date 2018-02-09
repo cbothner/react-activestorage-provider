@@ -16,28 +16,27 @@ import Listeners from './Listeners'
 
 import type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 
-class ActiveStorageProvider extends React.Component<
-  {
-    endpoint: Endpoint,
-    multiple?: boolean,
-    onBeforeBlobRequest?: ({
-      id: string,
-      file: File,
-      xhr: XMLHttpRequest,
-    }) => mixed,
-    onBeforeStorageRequest?: ({
-      id: string,
-      file: File,
-      xhr: XMLHttpRequest,
-    }) => mixed,
-    onSubmit: (Promise<Response>) => mixed,
-    render: RenderProps => React.Node,
-  },
-  {
-    uploading: boolean,
-    files: { [string]: ActiveStorageFileUpload },
-  }
-> {
+type Props = {
+  endpoint: Endpoint,
+  multiple?: boolean,
+  onBeforeBlobRequest?: ({
+    id: string,
+    file: File,
+    xhr: XMLHttpRequest,
+  }) => mixed,
+  onBeforeStorageRequest?: ({
+    id: string,
+    file: File,
+    xhr: XMLHttpRequest,
+  }) => mixed,
+  onSubmit: (Promise<Response>) => mixed,
+  render: RenderProps => React.Node,
+}
+type State = {
+  uploading: boolean,
+  files: { [string]: ActiveStorageFileUpload },
+}
+class ActiveStorageProvider extends React.Component<Props, State> {
   state = {
     uploading: false,
     files: {},
@@ -48,6 +47,13 @@ class ActiveStorageProvider extends React.Component<
 
   componentDidMount() {
     this._connect()
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props !== prevProps) {
+      this._disconnect()
+      this._connect()
+    }
   }
 
   componentWillUnmount() {
@@ -80,6 +86,9 @@ class ActiveStorageProvider extends React.Component<
           headers: new Headers(csrfHeader()),
         })
       )
+
+      this._disconnect()
+      this._connect()
     }
   }
 
@@ -120,7 +129,9 @@ class ActiveStorageProvider extends React.Component<
   }
 
   _disconnect() {
-    this.virtualForm && this.virtualForm.deconstruct()
+    if (this.virtualForm == null) return
+    this.virtualForm.deconstruct()
+    delete this.virtualForm
   }
 }
 
