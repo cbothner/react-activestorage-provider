@@ -35,24 +35,20 @@ npm install --save react-activestorage-provider
         onChange={e => handleUpload(e.currentTarget.files)}
       />
 
-      {uploads.map(upload => {
-        switch (upload.state) {
-          case 'uploading':
-            return (
-              <p>
-                Uploading ${upload.file.name}: ${upload.progress}%
-              </p>
-            )
-          case 'error':
-            return (
-              <p>
-                Error uploading ${upload.file.name}: ${upload.error}
-              </p>
-            )
-          case 'finished':
-            return <p>Finished uploading ${upload.file.name}</p>
-        }
-      })}
+      {uploads.map(
+        upload =>
+          upload.state === 'uploading' ? (
+            <p>
+              Uploading ${upload.file.name}: ${upload.progress}%
+            </p>
+          ) : upload.state === 'error' ? (
+            <p>
+              Error uploading ${upload.file.name}: ${upload.error}
+            </p>
+          ) : (
+            <p>Finished uploading ${upload.file.name}</p>
+          )
+      )}
     </div>
   )}
 />
