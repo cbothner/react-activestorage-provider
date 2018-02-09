@@ -10,31 +10,27 @@ import type { Endpoint } from './types'
 
 const CONVENTIONAL_DIRECT_UPLOADS_PATH = '/rails/active_storage/direct_uploads'
 
+type Props = {
+  endpoint: Endpoint,
+  multiple?: boolean,
+  onSubmit: Event => mixed,
+}
+
 class VirtualForm {
-  _endpoint: Endpoint
-  _multiple: ?boolean
+  props: Props
 
   _input: HTMLInputElement
   _submitButton: HTMLButtonElement
 
   form: HTMLFormElement
 
-  constructor(props: {
-    endpoint: Endpoint,
-    multiple?: boolean,
-    onSubmit: Event => mixed,
-  }) {
-    this._endpoint = props.endpoint
-    this._multiple = props.multiple
+  constructor(props: Props) {
+    this.props = props
 
     this._createForm()
-
-    this.form.append(this._createFileInput())
-    this.form.append(this._createSubmitButton())
+    this._appendForm()
 
     this.form.addEventListener('submit', props.onSubmit)
-
-    this._appendForm()
   }
 
   submit(files: FileList) {
@@ -48,10 +44,14 @@ class VirtualForm {
 
   _createForm() {
     this.form = document.createElement('form')
-    this.form.action = this._endpoint.path
+    this.form.action = this.props.endpoint.path
     this.form.enctype = 'multipart/form-data'
     this.form.method = 'post'
     this.form.style.display = 'none'
+
+    this.form.append(this._createFileInput())
+    this.form.append(this._createSubmitButton())
+
     return this.form
   }
 
@@ -60,7 +60,7 @@ class VirtualForm {
     this._input.type = 'file'
     this._input.dataset.directUploadUrl = CONVENTIONAL_DIRECT_UPLOADS_PATH
     this._input.name = this._inputName()
-    this._input.multiple = Boolean(this._multiple)
+    this._input.multiple = Boolean(this.props.multiple)
     return this._input
   }
 
@@ -72,7 +72,7 @@ class VirtualForm {
   }
 
   _inputName() {
-    const { attribute, model } = this._endpoint
+    const { attribute, model } = this.props.endpoint
     return `${model.toLowerCase()}[${attribute}]`
   }
 
