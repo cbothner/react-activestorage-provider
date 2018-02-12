@@ -1,6 +1,6 @@
 {
   "name": "react-activestorage-provider",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A React component that allows easy file upload using ActiveStorage",
   "keywords": [
     "react",
