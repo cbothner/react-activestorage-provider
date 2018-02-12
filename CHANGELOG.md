@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+* Exports flow types so you can import them
+
 ## [0.0.2] — 2018-02-09
 
 ### Changed

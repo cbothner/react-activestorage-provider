@@ -15,6 +15,7 @@ import VirtualForm from './VirtualForm'
 import Listeners from './Listeners'
 
 import type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
+export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 
 type Props = {
   endpoint: Endpoint,
