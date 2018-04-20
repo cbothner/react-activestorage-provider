@@ -13,6 +13,9 @@ export type Endpoint = {
   model: string,
   attribute: string,
   method: string,
+  host?: string,
+  port?: string,
+  protocol?: string,
 }
 
 export type RenderProps = {
