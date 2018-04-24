@@ -58,7 +58,7 @@ These are your options for configuring ActiveStorageProvider.
 
 | Prop (\*required)        | Description                                                                                                                |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `endpoint`\*             | `{ path: string, model: string, attribute: string, method: string, host: string, port: string, protocol: string }`<br />The details for the request to attach the file   |
+| `endpoint`\*             | `{ path: string, model: string, attribute: string, method: string }`<br />The details for the request to attach the file   |
 | `multiple`               | `boolean`<br/>Whether the component should accept multiple files. If true, the model should use `has_many_attached`.       |
 | `onBeforeBlobRequest`    | `({ id: string, file: File, xhr: XMLHttpRequest }) => mixed`<br />A callback that allows you to modify the blob request    |
 | `onBeforeStorageRequest` | `({ id: string, file: File, xhr: XMLHttpRequest }) => mixed`<br />A callback that allows you to modify the storage request |
