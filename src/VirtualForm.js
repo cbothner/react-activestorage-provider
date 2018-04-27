@@ -58,10 +58,22 @@ class VirtualForm {
   _createFileInput() {
     this._input = document.createElement('input')
     this._input.type = 'file'
-    this._input.dataset.directUploadUrl = CONVENTIONAL_DIRECT_UPLOADS_PATH
+    this._input.dataset.directUploadUrl = this._directUploadsUrl()
     this._input.name = this._inputName()
     this._input.multiple = Boolean(this.props.multiple)
     return this._input
+  }
+
+  _directUploadsUrl() {
+    const { host, protocol, port } = this.props.endpoint
+    if (host) {
+      const builtProtocol = protocol
+        ? `${protocol.split(':')[0]}://`
+        : 'https://'
+      const builtPort = port ? `:${port}` : ''
+      return `${builtProtocol}${host}${builtPort}${CONVENTIONAL_DIRECT_UPLOADS_PATH}`
+    }
+    return CONVENTIONAL_DIRECT_UPLOADS_PATH
   }
 
   _createSubmitButton() {
