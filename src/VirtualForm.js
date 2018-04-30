@@ -84,8 +84,9 @@ class VirtualForm {
   }
 
   _inputName() {
-    const { attribute, model } = this.props.endpoint
-    return `${model.toLowerCase()}[${attribute}]`
+    const { endpoint, multiple } = this.props
+    const { attribute, model } = endpoint
+    return `${model.toLowerCase()}[${attribute}]${multiple ? '[]' : ''}`
   }
 
   _attachForm() {
