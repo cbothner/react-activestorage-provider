@@ -10,9 +10,11 @@ acorn@^5.2.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.4.1.tgz#fdc58d9d17f4a4e98d102ded826a9b9759125102"
 
-activestorage@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/activestorage/-/activestorage-0.1.1.tgz#a5db701467e80e6a139fb1a8e77977829115f131"
+activestorage@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/activestorage/-/activestorage-5.2.0.tgz#91e526ea56db7157d7a9ee69f1e26b53327d6a6d"
+  dependencies:
+    spark-md5 "^3.0.0"
 
 ajv@^4.9.1:
   version "4.11.8"
@@ -1102,9 +1104,9 @@ find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-flow-bin@^0.65.0:
-  version "0.65.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.65.0.tgz#64ffeca27211c786e2d68508c65686ba1b8a2169"
+flow-bin@^0.75.0:
+  version "0.75.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.75.0.tgz#b96d1ee99d3b446a3226be66b4013224ce9df260"
 
 flow-copy-source@^1.3.0:
   version "1.3.0"
@@ -2321,6 +2323,10 @@ source-map-url@^0.4.0:
 source-map@^0.5.6, source-map@^0.5.7:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
+
+spark-md5@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/spark-md5/-/spark-md5-3.0.0.tgz#3722227c54e2faf24b1dc6d933cc144e6f71bfef"
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
