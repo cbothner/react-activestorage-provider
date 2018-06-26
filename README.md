@@ -71,7 +71,7 @@ This is the type of the argument with which your render function will be called.
 
 ```jsx
 type RenderProps = {
-  handleUpload: FileList => void /* call to initiate an upload */,
+  handleUpload: (FileList | File[]) => void /* call to initiate an upload */,
   ready: boolean /* false while any file is uploading */,
   uploads: ActiveStorageFileUpload[] /* uploads in progress */,
 }
