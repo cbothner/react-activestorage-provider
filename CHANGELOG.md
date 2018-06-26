@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.2.0] — 2018-06-26
+
 ### Changed
 
 * `handleUpload` now takes `File[]` or `FileList` for greater flexibility.
@@ -41,7 +43,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 * A component that handles the direct upload of a file to an ActiveStorage service and calls render props with arguments that let you build your own upload widget.
 
-[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/cbothner/react-activestorage-provider/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.0.3...v0.1.0
 [0.0.3]: https://github.com/cbothner/react-activestorage-provider/compare/v0.0.2...v0.0.3
