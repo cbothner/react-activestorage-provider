@@ -10,12 +10,12 @@ export default {
   output: [
     {
       file: pkg.main,
-      format: 'cjs'
+      format: 'cjs',
     },
     {
       file: pkg.module,
-      format: 'es'
-    }
+      format: 'es',
+    },
   ],
 
   external: ['react', 'react-dom'],
@@ -29,9 +29,10 @@ export default {
       include: 'node_modules/**',
       namedExports: {
         'node_modules/activestorage/app/assets/javascripts/activestorage.js': [
-          'start'
-        ]
-      }
-    })
-  ]
+          'start',
+          'DirectUpload',
+        ],
+      },
+    }),
+  ],
 }
