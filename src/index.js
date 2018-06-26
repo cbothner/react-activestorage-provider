@@ -8,11 +8,9 @@
  */
 
 import * as React from 'react'
-import * as ActiveStorage from 'activestorage'
 
 import csrfHeader from './csrfHeader'
-import VirtualForm from './VirtualForm'
-import Listeners from './Listeners'
+import Upload from './Upload'
 
 import type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
@@ -43,47 +41,18 @@ class ActiveStorageProvider extends React.Component<Props, State> {
     files: {},
   }
 
-  listeners: ?Listeners
-  virtualForm: ?VirtualForm
-
-  componentDidMount() {
-    this._connect()
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (this.props !== prevProps) {
-      this._disconnect()
-      this._connect()
-    }
-  }
-
-  componentWillUnmount() {
-    this._disconnect()
-  }
-
-  handleChooseFiles = (files: FileList) => {
+  handleChooseFiles = (files: FileList | File[]) => {
     if (this.state.uploading) return
     if (files.length === 0) return
 
     this.setState({ uploading: true }, () => {
-      this.virtualForm && this.virtualForm.submit(files)
+      Promise.all([...files].map(file => this._upload(file))).then(ids => {
+        this._hitEndpointWithSignedIds(ids).then(data => {
+          this.setState({ files: {}, uploading: false })
+          this.props.onSubmit(data)
+        })
+      })
     })
-  }
-
-  handlePostUploadSubmit = (e: Event) => {
-    e.preventDefault()
-    const form = e.currentTarget
-
-    if (form instanceof HTMLFormElement) {
-      if (!form.querySelector('[type="file"]:disabled')) return
-
-      const formData = new FormData(form)
-
-      this._hitEndpoint(formData).then(this.props.onSubmit)
-
-      this._disconnect()
-      this._connect()
-    }
   }
 
   render() {
@@ -95,46 +64,35 @@ class ActiveStorageProvider extends React.Component<Props, State> {
     })
   }
 
-  _connect() {
-    const {
+  _upload(file: File): Promise<string> {
+    const { endpoint, onBeforeBlobRequest, onBeforeStorageRequest } = this.props
+
+    return new Upload(file, {
       endpoint,
-      multiple,
       onBeforeBlobRequest,
       onBeforeStorageRequest,
-    } = this.props
-
-    this.virtualForm = new VirtualForm({
-      endpoint,
-      multiple,
-      onSubmit: this.handlePostUploadSubmit,
-    })
-
-    this.virtualForm &&
-      (this.listeners = new Listeners({
-        virtualForm: this.virtualForm,
-        onChangeFile: file =>
-          this.setState(({ files }) => ({ files: { ...files, ...file } })),
-        onResetFiles: uploading => this.setState({ files: {}, uploading }),
-        onBeforeBlobRequest,
-        onBeforeStorageRequest,
-      }))
-
-    ActiveStorage.start()
+      onChangeFile: fileUpload =>
+        this.setState(({ files }) => ({ files: { ...files, ...fileUpload } })),
+    }).start()
   }
 
-  _disconnect() {
-    if (this.virtualForm == null) return
-    this.virtualForm.deconstruct()
-    delete this.virtualForm
-  }
+  _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
+    const { endpoint, multiple } = this.props
+    const { path, method, attribute, model } = endpoint
 
-  _hitEndpoint(formData: FormData): Promise<Object> {
-    return fetch(this.props.endpoint.path, {
+    const body = {
+      [model.toLowerCase()]: {
+        [attribute]: multiple ? signedIds : signedIds[0],
+      },
+    }
+
+    return fetch(path, {
       credentials: 'same-origin',
-      method: this.props.endpoint.method,
-      body: formData,
+      method,
+      body: JSON.stringify(body),
       headers: new Headers({
         Accept: 'application/json',
+        'Content-Type': 'application/json',
         ...csrfHeader(),
       }),
     }).then(r => r.json())
