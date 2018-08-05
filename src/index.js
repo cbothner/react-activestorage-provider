@@ -17,6 +17,7 @@ export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 
 type Props = {
   endpoint: Endpoint,
+  token?: string,
   multiple?: boolean,
   onBeforeBlobRequest?: ({
     id: string,
@@ -77,7 +78,7 @@ class ActiveStorageProvider extends React.Component<Props, State> {
   }
 
   _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
-    const { endpoint, multiple } = this.props
+    const { endpoint, multiple, token } = this.props
     const { path, method, attribute, model } = endpoint
 
     const body = {
@@ -93,6 +94,7 @@ class ActiveStorageProvider extends React.Component<Props, State> {
       headers: new Headers({
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': token,
         ...csrfHeader(),
       }),
     }).then(r => r.json())
