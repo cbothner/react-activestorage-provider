@@ -30,6 +30,7 @@ type Props = {
     xhr: XMLHttpRequest,
   }) => mixed,
   onSubmit: Object => mixed,
+  onError?: Response => mixed,
   render: RenderProps => React.Node,
 }
 type State = {
@@ -48,10 +49,10 @@ class ActiveStorageProvider extends React.Component<Props, State> {
 
     this.setState({ uploading: true }, () => {
       Promise.all([...files].map(file => this._upload(file))).then(ids => {
-        this._hitEndpointWithSignedIds(ids).then(data => {
-          this.setState({ files: {}, uploading: false })
-          this.props.onSubmit(data)
-        })
+        this._hitEndpointWithSignedIds(ids)
+          .then(data => this.props.onSubmit(data))
+          .catch(e => this.props.onError && this.props.onError(e))
+          .then(() => this.setState({ files: {}, uploading: false }))
       })
     })
   }
@@ -97,7 +98,12 @@ class ActiveStorageProvider extends React.Component<Props, State> {
         ...(token ? { Authorization: token } : {}),
         ...csrfHeader(),
       }),
-    }).then(r => r.json())
+    })
+      .then(r => {
+        if (!r.ok) throw r
+        return r
+      })
+      .then(r => r.json())
   }
 }
 

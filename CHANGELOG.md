@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+
+* Accepts an `onError` callback prop. If saving the model returns an error status code, such as from failed validations, we need to be able to alert the user.
+
 ## [0.3.0] — 2018-08-06
 
 ### Added
