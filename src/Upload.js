@@ -60,10 +60,8 @@ class Upload {
   start(): Promise<string> {
     const promise = new Promise((resolve, reject) => {
       this.directUpload.create((error, attributes) => {
-        if (error) {
-          reject(error)
-        }
-        resolve(attributes.signed_id)
+        if (error) reject(error)
+        else resolve(attributes.signed_id)
       })
     })
 
