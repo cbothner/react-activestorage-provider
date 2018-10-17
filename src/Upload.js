@@ -101,7 +101,7 @@ class Upload {
   }
 
   handleProgress = ({ loaded, total }: ProgressEvent) => {
-    const progress = loaded / total * 100
+    const progress = (loaded / total) * 100
 
     this.handleChangeFile({
       state: 'uploading',
