@@ -120,12 +120,12 @@ class Upload {
     return signedId
   }
 
-  handleError = (error: Error) => {
+  handleError = (error: string) => {
     this.handleChangeFile({
       state: 'error',
       id: this.id,
       file: this.directUpload.file,
-      error: error.message,
+      error,
     })
     throw error
   }

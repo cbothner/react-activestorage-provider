@@ -19,7 +19,7 @@ export type Endpoint = {
 }
 
 export type RenderProps = {
-  handleUpload: (FileList | File[]) => void /* call to initiate an upload */,
+  handleUpload: (FileList | File[]) => mixed /* call to initiate an upload */,
   ready: boolean /* false while any file is uploading */,
   uploads: ActiveStorageFileUpload[] /* uploads in progress */,
 }

@@ -47,15 +47,20 @@ class ActiveStorageProvider extends React.Component<Props, State> {
     if (this.state.uploading) return
     if (files.length === 0) return
 
-    this.setState({ uploading: true }, () => {
-      Promise.all([...files].map(file => this._upload(file))).then(ids => {
-        this._hitEndpointWithSignedIds(ids)
-          .then(data => this.props.onSubmit(data))
-          .catch(e => this.props.onError && this.props.onError(e))
-          .then(() => this.setState({ files: {}, uploading: false }))
+    return new Promise<void>(resolve =>
+      this.setState({ uploading: true }, () => {
+        Promise.all([...files].map(file => this._upload(file))).then(ids => {
+          this._hitEndpointWithSignedIds(ids)
+            .then(data => this.props.onSubmit(data))
+            .catch(e => this.props.onError && this.props.onError(e))
+            .then(() => this.setState({ files: {}, uploading: false }, resolve))
+        })
       })
-    })
+    )
   }
+
+  handleChangeFile = (fileUpload: { [string]: ActiveStorageFileUpload }) =>
+    this.setState(({ files }) => ({ files: { ...files, ...fileUpload } }))
 
   render() {
     const { files } = this.state
@@ -73,8 +78,7 @@ class ActiveStorageProvider extends React.Component<Props, State> {
       endpoint,
       onBeforeBlobRequest,
       onBeforeStorageRequest,
-      onChangeFile: fileUpload =>
-        this.setState(({ files }) => ({ files: { ...files, ...fileUpload } })),
+      onChangeFile: this.handleChangeFile,
     }).start()
   }
 
