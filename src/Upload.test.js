@@ -14,7 +14,6 @@ jest.mock('activestorage', () => {
 
 const file = new File([], 'file')
 const options = {
-  origin: {},
   onChangeFile: jest.fn(),
   onBeforeBlobRequest: jest.fn(),
   onBeforeStorageRequest: jest.fn(),
@@ -26,6 +25,16 @@ describe('Upload', () => {
   })
 
   describe('constructor', () => {
+    it('falls back to default options', () => {
+      const upload = new Upload(file, {
+        ...options,
+        directUploadsPath: undefined,
+      })
+      expect(upload.options.directUploadsPath).toEqual(
+        Upload.CONVENTIONAL_DIRECT_UPLOADS_PATH
+      )
+    })
+
     it('reports that it is waiting to upload', () => {
       const upload = new Upload(file, options)
 

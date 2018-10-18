@@ -6,10 +6,9 @@
  */
 
 import * as ActiveStorage from 'activestorage'
+import { compactObject } from './helpers'
 
 import type { ActiveStorageFileUpload, Origin } from './types'
-
-const CONVENTIONAL_DIRECT_UPLOADS_PATH = '/rails/active_storage/direct_uploads'
 
 type Options = {|
   origin?: Origin,
@@ -28,9 +27,12 @@ type Options = {|
 |}
 
 class Upload {
+  static CONVENTIONAL_DIRECT_UPLOADS_PATH =
+    '/rails/active_storage/direct_uploads'
+
   static defaultOptions = {
     origin: {},
-    directUploadsPath: CONVENTIONAL_DIRECT_UPLOADS_PATH,
+    directUploadsPath: Upload.CONVENTIONAL_DIRECT_UPLOADS_PATH,
   }
 
   directUpload: ActiveStorage.DirectUpload
@@ -57,7 +59,7 @@ class Upload {
   }
 
   constructor(file: File, options: Options) {
-    this.options = { ...Upload.defaultOptions, ...options }
+    this.options = { ...Upload.defaultOptions, ...compactObject(options) }
     this.directUpload = new ActiveStorage.DirectUpload(
       file,
       this.directUploadsUrl,
