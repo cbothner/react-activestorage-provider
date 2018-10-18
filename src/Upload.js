@@ -7,12 +7,13 @@
 
 import * as ActiveStorage from 'activestorage'
 
-import type { ActiveStorageFileUpload, Endpoint } from './types'
+import type { ActiveStorageFileUpload, Origin } from './types'
 
 const CONVENTIONAL_DIRECT_UPLOADS_PATH = '/rails/active_storage/direct_uploads'
 
-type Options = {
-  endpoint: Endpoint,
+type Options = {|
+  origin?: Origin,
+  directUploadsPath?: string,
   onBeforeBlobRequest?: ({
     id: string,
     file: File,
@@ -24,30 +25,39 @@ type Options = {
     xhr: XMLHttpRequest,
   }) => mixed,
   onChangeFile: ({ [string]: ActiveStorageFileUpload }) => mixed,
-}
+|}
 
 class Upload {
+  static defaultOptions = {
+    origin: {},
+    directUploadsPath: CONVENTIONAL_DIRECT_UPLOADS_PATH,
+  }
+
   directUpload: ActiveStorage.DirectUpload
-  options: Options
+  options: { ...Options, ...typeof Upload.defaultOptions }
 
   get id(): string {
     return `${this.directUpload.id}`
   }
 
   get directUploadsUrl(): string {
-    const { host, protocol, port } = this.options.endpoint
+    const {
+      origin: { host, protocol, port },
+      directUploadsPath,
+    } = this.options
+
     if (host) {
       const builtProtocol = protocol
         ? `${protocol.split(':')[0]}://`
         : 'https://'
       const builtPort = port ? `:${port}` : ''
-      return `${builtProtocol}${host}${builtPort}${CONVENTIONAL_DIRECT_UPLOADS_PATH}`
+      return `${builtProtocol}${host}${builtPort}${directUploadsPath}`
     }
-    return CONVENTIONAL_DIRECT_UPLOADS_PATH
+    return directUploadsPath
   }
 
   constructor(file: File, options: Options) {
-    this.options = options
+    this.options = { ...Upload.defaultOptions, ...options }
     this.directUpload = new ActiveStorage.DirectUpload(
       file,
       this.directUploadsUrl,

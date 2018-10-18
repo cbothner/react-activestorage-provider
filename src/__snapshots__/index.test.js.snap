@@ -1,23 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ActiveStorageProvider updates the UI with upload progress 1`] = `
+exports[`ActiveStorageProvider renders a DirectUploadProvider 1`] = `
 <div
-  handleUpload={[Function]}
-  ready={true}
-  uploads={Array []}
-/>
-`;
-
-exports[`ActiveStorageProvider updates the UI with upload progress 2`] = `
-<div
-  handleUpload={[Function]}
-  ready={false}
-  uploads={
-    Array [
-      Object {
-        "fileName": "file",
-      },
-    ]
+  data-component="DirectUploadProvider"
+  onSuccess={[Function]}
+  origin={
+    Object {
+      "host": undefined,
+      "port": undefined,
+      "protocol": undefined,
+    }
   }
+  render={[Function]}
 />
 `;

@@ -1,19 +1,11 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import ActiveStorageProvider from './index'
-import Upload from './Upload'
-
-import type { ReactTestRenderer } from 'react-test-renderer'
 
 global.fetch = require('jest-fetch-mock')
 
-jest.mock('Upload', () =>
-  jest.fn((file, { onChangeFile }) => ({
-    start: jest.fn(() => {
-      onChangeFile({ [file.name]: { fileName: file.name } })
-      return Promise.resolve('signedId')
-    }),
-  }))
+jest.mock('DirectUploadProvider', () =>
+  jest.fn(props => <div data-component="DirectUploadProvider" {...props} />)
 )
 
 jest.mock('csrfHeader', () => () => ({ 'X-CSRF-Token': 'qwertyuiop' }))
@@ -30,7 +22,7 @@ const file = new File([], 'file')
 
 const userData = { id: '1', avatar: 'file' }
 
-function renderComponent(props: Object = {}): ReactTestRenderer {
+function renderComponent(props: Object = {}) {
   return renderer.create(
     <ActiveStorageProvider
       endpoint={endpoint}
@@ -55,21 +47,12 @@ describe('ActiveStorageProvider', () => {
     fetch.mockResponse(JSON.stringify(userData))
   })
 
-  it('updates the UI with upload progress', () => {
+  it('renders a DirectUploadProvider', () => {
     expect(tree).toMatchSnapshot()
-
-    tree.props.handleUpload([file])
-    tree = component.toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-
-  it('creates and starts an upload', () => {
-    tree.props.handleUpload([file])
-    expect(Upload).toHaveBeenCalledWith(file, expect.any(Object))
   })
 
   it('hits the given endpoint with the signed id of the upload after it has finished', async () => {
-    await tree.props.handleUpload([file])
+    await tree.props.onSuccess(['signedId'])
     expect(fetch).toHaveBeenCalledWith(
       endpoint.path,
       expect.objectContaining({

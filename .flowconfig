@@ -9,5 +9,6 @@
 [options]
 module.use_strict=true
 suppress_type=$FlowIssue
+unsafe.enable_getters_and_setters=true
 
 [strict]

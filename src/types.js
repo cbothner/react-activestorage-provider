@@ -8,14 +8,14 @@ export type ActiveStorageFileUpload =
   | { state: 'error', id: string, file: File, error: string }
   | { state: 'finished', id: string, file: File }
 
+export type Origin = { host?: string, port?: string, protocol?: string }
+
 export type Endpoint = {
+  ...Origin,
   path: string,
   model: string,
   attribute: string,
   method: string,
-  host?: string,
-  port?: string,
-  protocol?: string,
 }
 
 export type RenderProps = {
