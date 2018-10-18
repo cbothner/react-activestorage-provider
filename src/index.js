@@ -66,7 +66,6 @@ class ActiveStorageProvider extends React.Component<Props> {
       },
     }
 
-    debugger
     const response = await fetch(path, {
       credentials: 'same-origin',
       method,
