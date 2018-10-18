@@ -14,7 +14,7 @@ jest.mock('activestorage', () => {
 
 const file = new File([], 'file')
 const options = {
-  endpoint: {},
+  origin: {},
   onChangeFile: jest.fn(),
   onBeforeBlobRequest: jest.fn(),
   onBeforeStorageRequest: jest.fn(),
@@ -53,8 +53,8 @@ describe('Upload', () => {
     `(
       'allows the consumer to specify a different origin { protocol: $protocol, host: $host, port: $port}',
       ({ protocol, host, port, url }) => {
-        const endpoint = { protocol, host, port }
-        const upload = new Upload(file, { ...options, endpoint })
+        const origin = { protocol, host, port }
+        const upload = new Upload(file, { ...options, origin })
         expect(upload.directUploadsUrl).toEqual(url)
       }
     )

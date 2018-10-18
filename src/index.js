@@ -1,7 +1,10 @@
 /**
- * This component handles the direct upload of a file to an ActiveStorage
- * service and calls render props with arguments that indicate that upload’s
- * progress.
+ * A component that attaches a file or files to a Rails model using
+ * ActiveStorage. It delegates to DirectUploadProvider to create an
+ * ActiveStorage::Blob in the Rails database and upload the files directly to
+ * the storage service, then it makes a request to the model’s controller to
+ * attach the blob to the model. Calling a render function prop to allow the
+ * consumer to display the upload’s progress is also delegated.
  *
  * @providesModule ActiveStorageProvider
  * @flow
@@ -9,80 +12,51 @@
 
 import * as React from 'react'
 
-import csrfHeader from './csrfHeader'
-import Upload from './Upload'
+import DirectUploadProvider from './DirectUploadProvider'
+export { DirectUploadProvider }
 
+import csrfHeader from './csrfHeader'
+
+import type { DelegatedProps } from './DirectUploadProvider'
 import type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 
-type Props = {
+type Props = {|
+  ...DelegatedProps,
   endpoint: Endpoint,
   token?: string,
-  multiple?: boolean,
-  onBeforeBlobRequest?: ({
-    id: string,
-    file: File,
-    xhr: XMLHttpRequest,
-  }) => mixed,
-  onBeforeStorageRequest?: ({
-    id: string,
-    file: File,
-    xhr: XMLHttpRequest,
-  }) => mixed,
   onSubmit: Object => mixed,
   onError?: Response => mixed,
-  render: RenderProps => React.Node,
-}
-type State = {
-  uploading: boolean,
-  files: { [string]: ActiveStorageFileUpload },
-}
-class ActiveStorageProvider extends React.Component<Props, State> {
-  state = {
-    uploading: false,
-    files: {},
-  }
+|}
 
-  handleChooseFiles = (files: FileList | File[]) => {
-    if (this.state.uploading) return
-    if (files.length === 0) return
+class ActiveStorageProvider extends React.Component<Props> {
+  render() {
+    const {
+      endpoint: { host, port, protocol },
+      token,
+      onSubmit,
+      ...props
+    } = this.props
 
-    return new Promise<void>(resolve =>
-      this.setState({ uploading: true }, () => {
-        Promise.all([...files].map(file => this._upload(file))).then(ids => {
-          this._hitEndpointWithSignedIds(ids)
-            .then(data => this.props.onSubmit(data))
-            .catch(e => this.props.onError && this.props.onError(e))
-            .then(() => this.setState({ files: {}, uploading: false }, resolve))
-        })
-      })
+    return (
+      <DirectUploadProvider
+        {...props}
+        origin={{ host, port, protocol }}
+        onSuccess={this.handleSuccess}
+      />
     )
   }
 
-  handleChangeFile = (fileUpload: { [string]: ActiveStorageFileUpload }) =>
-    this.setState(({ files }) => ({ files: { ...files, ...fileUpload } }))
-
-  render() {
-    const { files } = this.state
-    return this.props.render({
-      handleUpload: this.handleChooseFiles,
-      ready: !this.state.uploading,
-      uploads: Object.keys(files).map(key => files[key]),
-    })
+  handleSuccess = async (ids: string[]) => {
+    try {
+      const data = await this._hitEndpointWithSignedIds(ids)
+      this.props.onSubmit(data)
+    } catch (e) {
+      this.props.onError && this.props.onError(e)
+    }
   }
 
-  _upload(file: File): Promise<string> {
-    const { endpoint, onBeforeBlobRequest, onBeforeStorageRequest } = this.props
-
-    return new Upload(file, {
-      endpoint,
-      onBeforeBlobRequest,
-      onBeforeStorageRequest,
-      onChangeFile: this.handleChangeFile,
-    }).start()
-  }
-
-  _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
+  async _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
     const { endpoint, multiple, token } = this.props
     const { path, method, attribute, model } = endpoint
 
@@ -92,7 +66,8 @@ class ActiveStorageProvider extends React.Component<Props, State> {
       },
     }
 
-    return fetch(path, {
+    debugger
+    const response = await fetch(path, {
       credentials: 'same-origin',
       method,
       body: JSON.stringify(body),
@@ -103,11 +78,10 @@ class ActiveStorageProvider extends React.Component<Props, State> {
         ...csrfHeader(),
       }),
     })
-      .then(r => {
-        if (!r.ok) throw r
-        return r
-      })
-      .then(r => r.json())
+
+    if (!response.ok) throw response
+
+    return response.json()
   }
 }
 

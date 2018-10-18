@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DirectUploadProvider updates the UI with upload progress 1`] = `
+<div
+  handleUpload={[Function]}
+  ready={true}
+  uploads={Array []}
+/>
+`;
+
+exports[`DirectUploadProvider updates the UI with upload progress 2`] = `
+<div
+  handleUpload={[Function]}
+  ready={false}
+  uploads={
+    Array [
+      Object {
+        "fileName": "file",
+      },
+    ]
+  }
+/>
+`;
