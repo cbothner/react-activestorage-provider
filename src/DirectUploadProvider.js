@@ -38,7 +38,7 @@ type Props = {
 
 type State = {|
   uploading: boolean,
-  files: { [string]: ActiveStorageFileUpload },
+  fileUploads: { [string]: ActiveStorageFileUpload },
 |}
 
 class DirectUploadProvider extends React.Component<Props, State> {
@@ -48,36 +48,57 @@ class DirectUploadProvider extends React.Component<Props, State> {
 
   state = {
     uploading: false,
-    files: {},
+    fileUploads: {},
   }
 
+  uploads: Upload[] = []
+
   render() {
-    const { files } = this.state
+    const { fileUploads } = this.state
     return this.props.render({
-      handleUpload: this.handleChooseFiles,
+      handleChooseFiles: this.handleChooseFiles,
+      handleBeginUpload: this.handleBeginUpload,
+      handleUpload: this.handleUpload,
       ready: !this.state.uploading,
-      uploads: Object.keys(files).map(key => files[key]),
+      uploads: Object.keys(fileUploads).map(key => fileUploads[key]),
     })
   }
 
-  handleChooseFiles = async (files: FileList | File[]) => {
+  handleUpload = async (files: FileList | File[]) => {
+    this.handleChooseFiles(files)
+    return this.handleBeginUpload()
+  }
+
+  handleChooseFiles = (files: FileList | File[]) => {
     if (this.state.uploading) return
-    if (files.length === 0) return
+
+    this.setState({ fileUploads: {} })
+    this.uploads = [...files].map(file => this._createUpload(file))
+  }
+
+  handleBeginUpload = async () => {
+    if (this.state.uploading) return
+    if (this.uploads.length === 0) return
 
     this.setState({ uploading: true })
 
     const signedIds = await Promise.all(
-      [...files].map(file => this._upload(file))
+      this.uploads.map(upload => upload.start())
     )
 
-    await this.props.onSuccess(signedIds)
-    this.setState({ files: {}, uploading: false })
+    this.props.onSuccess(signedIds)
+    this.uploads = []
+    this.setState({ fileUploads: {}, uploading: false })
   }
 
-  handleChangeFile = (fileUpload: { [string]: ActiveStorageFileUpload }) =>
-    this.setState(({ files }) => ({ files: { ...files, ...fileUpload } }))
+  handleChangeFileUpload = (fileUpload: {
+    [string]: ActiveStorageFileUpload,
+  }) =>
+    this.setState(({ fileUploads }) => ({
+      fileUploads: { ...fileUploads, ...fileUpload },
+    }))
 
-  _upload(file: File): Promise<string> {
+  _createUpload(file: File) {
     const {
       origin,
       directUploadsPath,
@@ -90,8 +111,8 @@ class DirectUploadProvider extends React.Component<Props, State> {
       directUploadsPath,
       onBeforeBlobRequest,
       onBeforeStorageRequest,
-      onChangeFile: this.handleChangeFile,
-    }).start()
+      onChangeFile: this.handleChangeFileUpload,
+    })
   }
 }
 

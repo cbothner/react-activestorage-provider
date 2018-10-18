@@ -7,12 +7,15 @@ import type { ReactTestRenderer } from 'react-test-renderer'
 global.fetch = require('jest-fetch-mock')
 
 jest.mock('Upload', () =>
-  jest.fn((file, { onChangeFile }) => ({
-    start: jest.fn(() => {
-      onChangeFile({ [file.name]: { fileName: file.name } })
-      return Promise.resolve('signedId')
-    }),
-  }))
+  jest.fn((file, { onChangeFile }) => {
+    onChangeFile({ [Date.now()]: { fileName: file.name } })
+
+    return {
+      start: jest.fn(() => {
+        return Promise.resolve('signedId')
+      }),
+    }
+  })
 )
 
 import Upload from './Upload'
@@ -53,9 +56,33 @@ describe('DirectUploadProvider', () => {
     expect(tree).toMatchSnapshot()
   })
 
-  it('creates and starts an upload', () => {
+  it('creates and starts an upload when handleUpload is called', () => {
     tree.props.handleUpload([file])
     expect(Upload).toHaveBeenCalledWith(file, expect.any(Object))
+    expect(Upload.mock.results[0].value.start).toHaveBeenCalled()
+  })
+
+  it('creates an upload when handleChooseFiles is called', () => {
+    tree.props.handleChooseFiles([file])
+    expect(Upload).toHaveBeenCalledWith(file, expect.any(Object))
+    expect(Upload.mock.results[0].value.start).not.toHaveBeenCalled()
+  })
+
+  it('updates the file upload progress list when handleChooseFiles is called', () => {
+    tree.props.handleChooseFiles([file])
+    tree = component.toJSON()
+    expect(tree.props.uploads).toHaveLength(1)
+
+    tree.props.handleChooseFiles([file])
+    tree = component.toJSON()
+    expect(tree.props.uploads).toHaveLength(1)
+  })
+
+  it('starts the upload when handleBeginUpload is called', () => {
+    tree.props.handleChooseFiles([file])
+
+    tree.props.handleBeginUpload()
+    expect(Upload.mock.results[0].value.start).toHaveBeenCalled()
   })
 
   it('calls onSuccess prop when uploads are finished', async () => {

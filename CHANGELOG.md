@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Added
 
-- Exposes a lower level component `DirectUploadProvider` that creates a `Blob` record and uploads the file, then returns the attachment IDs for the consumer to attach.
+- Exposed a lower level component `DirectUploadProvider` that creates a `Blob` record and uploads the file, then returns the attachment IDs for the consumer to attach.
+- Allows choosing files and beginning their upload to be two separate processes by adding two more callbacks to RenderProps.
 
 ## [0.4.0] — 2018-10-12
 
