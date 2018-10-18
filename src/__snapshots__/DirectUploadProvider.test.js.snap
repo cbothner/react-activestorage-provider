@@ -2,6 +2,8 @@
 
 exports[`DirectUploadProvider updates the UI with upload progress 1`] = `
 <div
+  handleBeginUpload={[Function]}
+  handleChooseFiles={[Function]}
   handleUpload={[Function]}
   ready={true}
   uploads={Array []}
@@ -10,6 +12,8 @@ exports[`DirectUploadProvider updates the UI with upload progress 1`] = `
 
 exports[`DirectUploadProvider updates the UI with upload progress 2`] = `
 <div
+  handleBeginUpload={[Function]}
+  handleChooseFiles={[Function]}
   handleUpload={[Function]}
   ready={false}
   uploads={

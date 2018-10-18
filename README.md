@@ -78,10 +78,18 @@ These are your options for configuring ActiveStorageProvider.
 This is the type of the argument with which your render function will be called.
 
 ```jsx
-type RenderProps = {
-  handleUpload: (FileList | File[]) => mixed /* call to initiate an upload */,
+export type RenderProps = {
   ready: boolean /* false while any file is uploading */,
   uploads: ActiveStorageFileUpload[] /* uploads in progress */,
+
+  handleUpload: (FileList | File[]) => mixed /* call to initiate an upload */,
+
+  /* or, if you want more granular control... */
+
+  /* call to set list of files to be uploaded */
+  handleChooseFiles: (FileList | File[]) => mixed,
+  /* then call to begin the upload of the files in the list */
+  handleBeginUpload: () => mixed,
 }
 
 type ActiveStorageFileUpload =
