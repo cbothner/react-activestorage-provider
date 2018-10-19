@@ -64,4 +64,9 @@ describe('ActiveStorageProvider', () => {
     )
     expect(onSubmit).toHaveBeenCalledWith(userData)
   })
+
+  it('doesn’t hit the endpoint if handleUpload is called with no files', async () => {
+    await tree.props.onSuccess([])
+    expect(fetch).not.toHaveBeenCalled()
+  })
 })

@@ -85,6 +85,11 @@ describe('DirectUploadProvider', () => {
     expect(Upload.mock.results[0].value.start).toHaveBeenCalled()
   })
 
+  it('calls onSuccess with [] if handleBeginUpload is called with no chosen files', async () => {
+    await tree.props.handleBeginUpload()
+    expect(onSuccess).toHaveBeenCalledWith([])
+  })
+
   it('calls onSuccess prop when uploads are finished', async () => {
     await tree.props.handleUpload([file])
     expect(onSuccess).toHaveBeenCalledWith(['signedId'])

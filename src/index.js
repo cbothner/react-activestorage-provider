@@ -48,6 +48,8 @@ class ActiveStorageProvider extends React.Component<Props> {
   }
 
   handleSuccess = async (ids: string[]) => {
+    if (ids.length === 0) return
+
     try {
       const data = await this._hitEndpointWithSignedIds(ids)
       this.props.onSubmit(data)

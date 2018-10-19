@@ -78,7 +78,6 @@ class DirectUploadProvider extends React.Component<Props, State> {
 
   handleBeginUpload = async () => {
     if (this.state.uploading) return
-    if (this.uploads.length === 0) return
 
     this.setState({ uploading: true })
 
