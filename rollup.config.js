@@ -11,17 +11,19 @@ export default {
     {
       file: pkg.main,
       format: 'cjs',
+      exports: 'named',
     },
     {
       file: pkg.module,
       format: 'es',
+      exports: 'named',
     },
   ],
 
   external: ['react', 'react-dom'],
 
   plugins: [
-    babel({ exclude: 'node_modules/**' }),
+    babel({ exclude: 'node_modules/**', runtimeHelpers: true }),
 
     resolve({ jsnext: true, main: true }),
 
