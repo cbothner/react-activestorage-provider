@@ -6,13 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.6.0] — 2018-10-23
+
 ### Added
+
 - Added an optional `headers` prop so that custom headers can be passed. Thanks, @kceb
 
 ### Changed
+
 - If `X-CSRF-Token` is included in the `headers` prop, we are no longer fetching the CSRF token from the meta tags.
 
 ### Removed
+
 - Removed the special-case `token` prop in favor of the more general `headers` prop, to which you can pass the Authorization header. You can replace `token="Bearer asdf"` with `headers={{ Authorization: 'Bearer asdf' }}`
 
 ## [0.5.0] — 2018-10-19
@@ -71,7 +76,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - A component that handles the direct upload of a file to an ActiveStorage service and calls render props with arguments that let you build your own upload widget.
 
-[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.5.0...HEAD
+[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.2.0...v0.3.0
