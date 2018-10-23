@@ -1,7 +1,6 @@
 # react-activestorage-provider
 
 [![NPM](https://img.shields.io/npm/v/react-activestorage-provider.svg)](https://www.npmjs.com/package/react-activestorage-provider)
-![Github commits (since latest release)](https://img.shields.io/github/commits-since/cbothner/react-activestorage-provider/latest.svg)
 [![Build Status](https://semaphoreci.com/api/v1/cbothner/react-activestorage-provider/branches/master/shields_badge.svg)](https://semaphoreci.com/cbothner/react-activestorage-provider)
 [![CodeClimate Maintainability](https://img.shields.io/codeclimate/maintainability/cbothner/react-activestorage-provider.svg)](https://codeclimate.com/github/cbothner/react-activestorage-provider/maintainability)
 [![CodeClimate Coverage](https://img.shields.io/codeclimate/coverage/cbothner/react-activestorage-provider.svg)](https://codeclimate.com/github/cbothner/react-activestorage-provider/coverage)
