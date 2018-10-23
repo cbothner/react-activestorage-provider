@@ -18,12 +18,7 @@ export { DirectUploadProvider }
 import csrfHeader from './csrfHeader'
 
 import type { DelegatedProps } from './DirectUploadProvider'
-import type {
-  ActiveStorageFileUpload,
-  Endpoint,
-  RenderProps,
-  CustomHeaders,
-} from './types'
+import type { Endpoint, CustomHeaders } from './types'
 export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 
 type Props = {|

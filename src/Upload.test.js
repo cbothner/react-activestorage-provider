@@ -1,8 +1,12 @@
+/**
+ * @noflow
+ */
+
 import Upload from './Upload'
 
 jest.mock('activestorage', () => {
   return {
-    DirectUpload: jest.fn((file, url, delegate) => ({
+    DirectUpload: jest.fn(file => ({
       id: 'id',
       file,
       create(cb) {
@@ -36,7 +40,7 @@ describe('Upload', () => {
     })
 
     it('reports that it is waiting to upload', () => {
-      const upload = new Upload(file, options)
+      new Upload(file, options)
 
       expect(options.onChangeFile).toHaveBeenCalledWith({
         id: { state: 'waiting', id: 'id', file },
@@ -86,7 +90,7 @@ describe('Upload', () => {
     describe('if the upload fails', () => {
       jest.resetModules().doMock('activestorage', () => {
         return {
-          DirectUpload: jest.fn((file, url, delegate) => ({
+          DirectUpload: jest.fn(file => ({
             id: 'id',
             file,
             create(cb) {

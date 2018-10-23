@@ -1,3 +1,7 @@
+/**
+ * @noflow
+ */
+
 import csrfHeader from './csrfHeader'
 
 describe('csrfHeader', () => {

@@ -1,8 +1,10 @@
+/**
+ * @noflow
+ */
+
 import React from 'react'
 import renderer from 'react-test-renderer'
 import DirectUploadProvider from './DirectUploadProvider'
-
-import type { ReactTestRenderer } from 'react-test-renderer'
 
 global.fetch = require('jest-fetch-mock')
 
@@ -24,7 +26,7 @@ const onSuccess = jest.fn()
 
 const file = new File([], 'file')
 
-function renderComponent(props: Object = {}): ReactTestRenderer {
+function renderComponent(props) {
   return renderer.create(
     <DirectUploadProvider
       origin={{}}
