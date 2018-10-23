@@ -1,6 +1,7 @@
 # react-activestorage-provider
 
 [![NPM](https://img.shields.io/npm/v/react-activestorage-provider.svg)](https://www.npmjs.com/package/react-activestorage-provider)
+[![Build Status](https://semaphoreci.com/api/v1/cbothner/react-activestorage-provider/branches/master/shields_badge.svg)](https://semaphoreci.com/cbothner/react-activestorage-provider)
 
 ActiveStorage is an amazing addition to Rails 5.2, and as usual the team have made it fantastically simple to use... if you’re generating HTML server-side, that is. This component aims to make it just as easy to use from React.
 
