@@ -1,3 +1,7 @@
+/**
+ * @noflow
+ */
+
 import * as H from './helpers'
 
 describe('compactObject', () => {

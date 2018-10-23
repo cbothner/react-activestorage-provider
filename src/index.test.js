@@ -1,3 +1,7 @@
+/**
+ * @noflow
+ */
+
 import React from 'react'
 import renderer from 'react-test-renderer'
 import ActiveStorageProvider from './index'
@@ -18,8 +22,6 @@ const endpoint = {
   method: 'PUT',
 }
 const onSubmit = jest.fn()
-
-const file = new File([], 'file')
 
 const userData = { id: '1', avatar: 'file' }
 

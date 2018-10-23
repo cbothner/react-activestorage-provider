@@ -1,0 +1,31 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:flowtype/recommended",
+    "plugin:jest/recommended",
+    "plugin:react/recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "plugins": ["flowtype"],
+  "rules": {
+    "jest/expect-expect": "error",
+    "no-unused-vars": ["error", { "ignoreRestSiblings": true }]
+  },
+  "settings": {
+    "react": {
+      "version": "0.14.9"
+    }
+  }
+}
