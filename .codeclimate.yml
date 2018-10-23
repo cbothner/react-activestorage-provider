@@ -23,6 +23,7 @@ checks:
 plugins:
   eslint:
     enabled: true
+    channel: 'eslint-4'
 exclude_patterns:
   - 'dist/'
   - 'flow-typed/'
