@@ -20,7 +20,6 @@
   },
   "plugins": ["flowtype"],
   "rules": {
-    "jest/expect-expect": "error",
     "no-unused-vars": ["error", { "ignoreRestSiblings": true }]
   },
   "settings": {
