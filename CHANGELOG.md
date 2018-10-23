@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Changed
 - If `X-CSRF-Token` is included in the `headers` prop, we are no longer fetching the CSRF token from the meta tags.
 
+### Removed
+- Removed the special-case `token` prop in favor of the more general `headers` prop, to which you can pass the Authorization header. You can replace `token="Bearer asdf"` with `headers={{ Authorization: 'Bearer asdf' }}`
+
 ## [0.5.0] — 2018-10-19
 
 ### Added
