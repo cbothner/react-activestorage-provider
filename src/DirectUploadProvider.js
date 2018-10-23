@@ -12,7 +12,12 @@ import * as React from 'react'
 
 import Upload from './Upload'
 
-import type { ActiveStorageFileUpload, Origin, RenderProps } from './types'
+import type {
+  ActiveStorageFileUpload,
+  Origin,
+  RenderProps,
+  CustomHeaders,
+} from './types'
 
 export type DelegatedProps = {|
   multiple?: boolean,
@@ -34,6 +39,7 @@ type Props = {
   origin: Origin,
   directUploadsPath?: string,
   onSuccess: (string[]) => mixed,
+  headers?: CustomHeaders,
 }
 
 type State = {|
@@ -103,6 +109,7 @@ class DirectUploadProvider extends React.Component<Props, State> {
       directUploadsPath,
       onBeforeBlobRequest,
       onBeforeStorageRequest,
+      headers,
     } = this.props
 
     return new Upload(file, {
@@ -111,6 +118,7 @@ class DirectUploadProvider extends React.Component<Props, State> {
       onBeforeBlobRequest,
       onBeforeStorageRequest,
       onChangeFile: this.handleChangeFileUpload,
+      headers,
     })
   }
 }

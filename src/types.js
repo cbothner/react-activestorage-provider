@@ -31,3 +31,5 @@ export type RenderProps = {
   /* begin the upload of the files in the list */
   handleBeginUpload: () => mixed,
 }
+
+export type CustomHeaders = { [string]: string }

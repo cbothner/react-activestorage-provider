@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Added
+- Added an optional `headers` prop so that custom headers can be passed. Thanks, @kceb
+
+### Changed
+- If `X-CSRF-Token` is included in the `headers` prop, we are no longer fetching the CSRF token from the meta tags.
+
 ## [0.5.0] — 2018-10-19
 
 ### Added

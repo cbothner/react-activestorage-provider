@@ -18,7 +18,12 @@ export { DirectUploadProvider }
 import csrfHeader from './csrfHeader'
 
 import type { DelegatedProps } from './DirectUploadProvider'
-import type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
+import type {
+  ActiveStorageFileUpload,
+  Endpoint,
+  RenderProps,
+  CustomHeaders,
+} from './types'
 export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 
 type Props = {|
@@ -27,6 +32,7 @@ type Props = {|
   token?: string,
   onSubmit: Object => mixed,
   onError?: Response => mixed,
+  headers?: CustomHeaders,
 |}
 
 class ActiveStorageProvider extends React.Component<Props> {
@@ -35,6 +41,7 @@ class ActiveStorageProvider extends React.Component<Props> {
       endpoint: { host, port, protocol },
       token,
       onSubmit,
+      headers,
       ...props
     } = this.props
 
@@ -59,15 +66,15 @@ class ActiveStorageProvider extends React.Component<Props> {
   }
 
   async _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
-    const { endpoint, multiple, token } = this.props
+    const { endpoint, multiple, token, headers } = this.props
     const { path, method, attribute, model } = endpoint
-
     const body = {
       [model.toLowerCase()]: {
         [attribute]: multiple ? signedIds : signedIds[0],
       },
     }
 
+    const addCSRFHeader = !headers || !headers.hasOwnProperty('X-CSRF-Token')
     const response = await fetch(path, {
       credentials: 'same-origin',
       method,
@@ -76,7 +83,8 @@ class ActiveStorageProvider extends React.Component<Props> {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         ...(token ? { Authorization: token } : {}),
-        ...csrfHeader(),
+        ...(addCSRFHeader ? csrfHeader() : {}),
+        ...headers,
       }),
     })
 

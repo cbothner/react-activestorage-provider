@@ -8,7 +8,7 @@
 import * as ActiveStorage from 'activestorage'
 import { compactObject } from './helpers'
 
-import type { ActiveStorageFileUpload, Origin } from './types'
+import type { ActiveStorageFileUpload, Origin, CustomHeaders } from './types'
 
 type Options = {|
   origin?: Origin,
@@ -24,6 +24,7 @@ type Options = {|
     xhr: XMLHttpRequest,
   }) => mixed,
   onChangeFile: ({ [string]: ActiveStorageFileUpload }) => mixed,
+  headers?: CustomHeaders,
 |}
 
 class Upload {
@@ -85,6 +86,8 @@ class Upload {
    */
 
   directUploadWillCreateBlobWithXHR(xhr: XMLHttpRequest) {
+    this.addHeaders(xhr)
+
     this.options.onBeforeBlobRequest &&
       this.options.onBeforeBlobRequest({
         id: this.id,
@@ -107,6 +110,15 @@ class Upload {
   /**
    * @private
    */
+
+  addHeaders(xhr: XMLHttpRequest) {
+    const headers = this.options.headers
+    if (headers) {
+      for (const headerKey of Object.keys(headers)) {
+        xhr.setRequestHeader(headerKey, headers[headerKey])
+      }
+    }
+  }
 
   handleChangeFile = (upload: ActiveStorageFileUpload) => {
     this.options.onChangeFile({ [this.id]: upload })

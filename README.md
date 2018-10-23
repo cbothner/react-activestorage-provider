@@ -73,6 +73,7 @@ These are your options for configuring ActiveStorageProvider.
 | `onSubmit`\*             | `Object => mixed`<br />A callback for the server response to successfully saving your model                                                                               |
 | `render`\*               | `RenderProps => React.Node`<br />Render props                                                                                                                             |
 | `token`                  | `string`<br/>Optional authorization token                                                                                                                                 |
+| `headers`                | `{[key: string]: string}`<br/>Optional headers to add to request                                                                                                          |
 
 ### `RenderProps`
 
@@ -113,3 +114,4 @@ ActiveStorageProvider makes it simple to add a quick “upload” button by taki
 | `onSuccess`\*            | `(string[]) => mixed`<br />The callback that will be called with the signed ids of the files after the upload is complete               |
 | `origin`                 | `{ host?: string, port?: string, protocol?: string }`<br />The origin of your rails server. Defaults to where your React app is running |
 | `render`\*               | `RenderProps => React.Node`<br />Render props                                                                                           |
+| `headers`                | `{[key: string]: string}`<br/>Optional headers to add to request                                                                        |

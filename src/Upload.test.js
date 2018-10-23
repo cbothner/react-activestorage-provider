@@ -127,6 +127,27 @@ describe('Upload', () => {
           xhr,
         })
       })
+
+      describe('if headers are provided', () => {
+        const mockXHR = {
+          setRequestHeader: jest.fn(),
+          readyState: 1,
+        }
+        window.XMLHttpRequest = jest.fn(() => mockXHR)
+
+        it('adds the headers to the xhr request', () => {
+          const xhr = new XMLHttpRequest()
+          const headerKey = 'Test-Header'
+          const headerValue = 'testValue'
+          const headers = { [headerKey]: headerValue }
+          const upload = new Upload(file, { headers, ...options })
+          upload.directUploadWillCreateBlobWithXHR(xhr)
+          expect(mockXHR.setRequestHeader).toHaveBeenCalledWith(
+            headerKey,
+            headerValue
+          )
+        })
+      })
     })
 
     describe('directUploadWillStoreFileWithXHR', () => {
