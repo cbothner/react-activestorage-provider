@@ -12,7 +12,12 @@ import * as React from 'react'
 
 import Upload from './Upload'
 
-import type { ActiveStorageFileUpload, Origin, RenderProps, CustomHeaders } from './types'
+import type {
+  ActiveStorageFileUpload,
+  Origin,
+  RenderProps,
+  CustomHeaders,
+} from './types'
 
 export type DelegatedProps = {|
   multiple?: boolean,

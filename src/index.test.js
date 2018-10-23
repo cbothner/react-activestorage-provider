@@ -8,8 +8,8 @@ jest.mock('DirectUploadProvider', () =>
   jest.fn(props => <div data-component="DirectUploadProvider" {...props} />)
 )
 
-const mockCSRFHeader = { 'X-CSRF-Token': 'qwertyuiop' };
-jest.mock('csrfHeader', () => () => (mockCSRFHeader))
+const mockCSRFHeader = { 'X-CSRF-Token': 'qwertyuiop' }
+jest.mock('csrfHeader', () => () => mockCSRFHeader)
 
 const endpoint = {
   path: '/users/1',
@@ -72,21 +72,21 @@ describe('ActiveStorageProvider', () => {
   })
 
   describe('if custom headers are provided', () => {
-    const customHeaders = { 'TEST-HEADER': 'testValue' };
+    const customHeaders = { 'TEST-HEADER': 'testValue' }
 
     beforeEach(() => {
-      component = renderComponent({ headers: customHeaders });
+      component = renderComponent({ headers: customHeaders })
       tree = component.toJSON()
-    });
-  
+    })
+
     it('hits the given endpoint with the custom headers', async () => {
       await tree.props.onSuccess(['signedId'])
       const headers = new Headers({
         Accept: 'application/json',
         'Content-Type': 'application/json',
         ...mockCSRFHeader,
-        ...customHeaders
-      });
+        ...customHeaders,
+      })
       expect(fetch).toHaveBeenCalledWith(
         endpoint.path,
         expect.objectContaining({
@@ -97,23 +97,23 @@ describe('ActiveStorageProvider', () => {
           headers,
         })
       )
-    });
+    })
 
     describe('if an X-CSRF-Token is provided', () => {
-      const customHeaders = { 'X-CSRF-Token': 'testToken' };
+      const customHeaders = { 'X-CSRF-Token': 'testToken' }
 
       beforeEach(() => {
-        component = renderComponent({ headers: customHeaders });
+        component = renderComponent({ headers: customHeaders })
         tree = component.toJSON()
-      });
+      })
 
       it('uses the provided X-CSRF-Token', async () => {
         await tree.props.onSuccess(['signedId'])
         const headers = new Headers({
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          ...customHeaders
-        });
+          ...customHeaders,
+        })
         expect(fetch).toHaveBeenCalledWith(
           endpoint.path,
           expect.objectContaining({
@@ -124,7 +124,7 @@ describe('ActiveStorageProvider', () => {
             headers,
           })
         )
-      });
-    });
-  });
+      })
+    })
+  })
 })

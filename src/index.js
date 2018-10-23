@@ -18,7 +18,12 @@ export { DirectUploadProvider }
 import csrfHeader from './csrfHeader'
 
 import type { DelegatedProps } from './DirectUploadProvider'
-import type { ActiveStorageFileUpload, Endpoint, RenderProps, CustomHeaders } from './types'
+import type {
+  ActiveStorageFileUpload,
+  Endpoint,
+  RenderProps,
+  CustomHeaders,
+} from './types'
 export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 
 type Props = {|
@@ -69,7 +74,7 @@ class ActiveStorageProvider extends React.Component<Props> {
       },
     }
 
-    const addCSRFHeader = !headers || !headers.hasOwnProperty('X-CSRF-Token');
+    const addCSRFHeader = !headers || !headers.hasOwnProperty('X-CSRF-Token')
     const response = await fetch(path, {
       credentials: 'same-origin',
       method,
@@ -78,8 +83,8 @@ class ActiveStorageProvider extends React.Component<Props> {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         ...(token ? { Authorization: token } : {}),
-        ...addCSRFHeader && csrfHeader(),
-        ...headers
+        ...(addCSRFHeader ? csrfHeader() : {}),
+        ...headers,
       }),
     })
 

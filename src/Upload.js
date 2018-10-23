@@ -86,7 +86,7 @@ class Upload {
    */
 
   directUploadWillCreateBlobWithXHR(xhr: XMLHttpRequest) {
-    this.addHeaders(xhr);
+    this.addHeaders(xhr)
 
     this.options.onBeforeBlobRequest &&
       this.options.onBeforeBlobRequest({
@@ -112,7 +112,7 @@ class Upload {
    */
 
   addHeaders(xhr: XMLHttpRequest) {
-    const headers = this.options.headers;
+    const headers = this.options.headers
     if (headers) {
       for (const headerKey of Object.keys(headers)) {
         xhr.setRequestHeader(headerKey, headers[headerKey])
