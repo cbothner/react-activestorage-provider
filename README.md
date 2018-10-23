@@ -74,7 +74,6 @@ These are your options for configuring ActiveStorageProvider.
 | `onError`                | `Response => mixed`<br />A callback to handle an error (>= 400) response by the server in saving your model                                                               |
 | `onSubmit`\*             | `Object => mixed`<br />A callback for the server response to successfully saving your model                                                                               |
 | `render`\*               | `RenderProps => React.Node`<br />Render props                                                                                                                             |
-| `token`                  | `string`<br/>Optional authorization token                                                                                                                                 |
 | `headers`                | `{[key: string]: string}`<br/>Optional headers to add to request                                                                                                          |
 
 ### `RenderProps`
