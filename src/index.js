@@ -24,7 +24,6 @@ export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 type Props = {|
   ...DelegatedProps,
   endpoint: Endpoint,
-  token?: string,
   onSubmit: Object => mixed,
   onError?: Response => mixed,
   headers?: CustomHeaders,
@@ -34,7 +33,6 @@ class ActiveStorageProvider extends React.Component<Props> {
   render() {
     const {
       endpoint: { host, port, protocol },
-      token,
       onSubmit,
       headers,
       ...props
@@ -61,7 +59,7 @@ class ActiveStorageProvider extends React.Component<Props> {
   }
 
   async _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
-    const { endpoint, multiple, token, headers } = this.props
+    const { endpoint, multiple, headers } = this.props
     const { path, method, attribute, model } = endpoint
     const body = {
       [model.toLowerCase()]: {
@@ -77,7 +75,6 @@ class ActiveStorageProvider extends React.Component<Props> {
       headers: new Headers({
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        ...(token ? { Authorization: token } : {}),
         ...(addCSRFHeader ? csrfHeader() : {}),
         ...headers,
       }),
