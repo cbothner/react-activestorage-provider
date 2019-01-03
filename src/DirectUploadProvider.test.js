@@ -5,6 +5,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import DirectUploadProvider from './DirectUploadProvider'
+import Upload from './Upload'
 
 global.fetch = require('jest-fetch-mock')
 
@@ -19,8 +20,6 @@ jest.mock('Upload', () =>
     }
   })
 )
-
-import Upload from './Upload'
 
 const onSuccess = jest.fn()
 

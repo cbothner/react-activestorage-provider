@@ -13,13 +13,10 @@
 import * as React from 'react'
 
 import DirectUploadProvider from './DirectUploadProvider'
-export { DirectUploadProvider }
-
 import csrfHeader from './csrfHeader'
 
 import type { DelegatedProps } from './DirectUploadProvider'
 import type { Endpoint, CustomHeaders } from './types'
-export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
 
 type Props = {|
   ...DelegatedProps,
@@ -31,6 +28,21 @@ type Props = {|
 
 class ActiveStorageProvider extends React.Component<Props> {
   static defaultProps = { headers: {} }
+
+  get _headers(): Headers {
+    const { headers } = this.props
+    const normalizedHeaders = Object.keys(headers).reduce((acc, key) => {
+      acc[key.toLowerCase()] = headers[key]
+      return acc
+    }, {})
+
+    return new Headers({
+      accept: 'application/json',
+      'content-type': 'application/json',
+      ...csrfHeader(),
+      ...normalizedHeaders,
+    })
+  }
 
   render() {
     const {
@@ -60,29 +72,14 @@ class ActiveStorageProvider extends React.Component<Props> {
     }
   }
 
-  get _headers(): Headers {
-    const { headers } = this.props,
-      normalizedHeaders = Object.keys(headers).reduce(
-        (acc, key) => ((acc[key.toLowerCase()] = headers[key]), acc),
-        {}
-      )
-
-    return new Headers({
-      accept: 'application/json',
-      'content-type': 'application/json',
-      ...csrfHeader(),
-      ...normalizedHeaders,
-    })
-  }
-
   async _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
-    const { endpoint, multiple } = this.props,
-      { path, method, attribute, model } = endpoint,
-      body = {
-        [model.toLowerCase()]: {
-          [attribute]: multiple ? signedIds : signedIds[0],
-        },
-      }
+    const { endpoint, multiple } = this.props
+    const { path, method, attribute, model } = endpoint
+    const body = {
+      [model.toLowerCase()]: {
+        [attribute]: multiple ? signedIds : signedIds[0],
+      },
+    }
 
     const response = await fetch(path, {
       credentials: 'same-origin',
@@ -98,3 +95,6 @@ class ActiveStorageProvider extends React.Component<Props> {
 }
 
 export default ActiveStorageProvider
+export { DirectUploadProvider }
+
+export type { ActiveStorageFileUpload, Endpoint, RenderProps } from './types'
