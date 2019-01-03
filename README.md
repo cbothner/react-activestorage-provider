@@ -68,13 +68,13 @@ These are your options for configuring ActiveStorageProvider.
 | Prop (\*required)        | Description                                                                                                                                                               |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `endpoint`\*             | `{ path: string, model: string, attribute: string, method: string, host?: string, port?: string, protocol?: string }`<br />The details for the request to attach the file |
-| `multiple`               | `boolean`<br/>Whether the component should accept multiple files. If true, the model should use `has_many_attached`                                                       |
+| `multiple`               | `boolean` (false)<br/>Whether the component should accept multiple files. If true, the model should use `has_many_attached`                                               |
 | `onBeforeBlobRequest`    | `({ id: string, file: File, xhr: XMLHttpRequest }) => mixed`<br />A callback that allows you to modify the blob request                                                   |
 | `onBeforeStorageRequest` | `({ id: string, file: File, xhr: XMLHttpRequest }) => mixed`<br />A callback that allows you to modify the storage request                                                |
 | `onError`                | `Response => mixed`<br />A callback to handle an error (>= 400) response by the server in saving your model                                                               |
 | `onSubmit`\*             | `Object => mixed`<br />A callback for the server response to successfully saving your model                                                                               |
 | `render`\*               | `RenderProps => React.Node`<br />Render props                                                                                                                             |
-| `headers`                | `{[key: string]: string}`<br/>Optional headers to add to request                                                                                                          |
+| `headers`                | `{[key: string]: string}`<br/>Optional headers to add to request, can also be used to override default headers                                                            |
 
 ### `RenderProps`
 

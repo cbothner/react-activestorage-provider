@@ -26,10 +26,12 @@ type Props = {|
   endpoint: Endpoint,
   onSubmit: Object => mixed,
   onError?: Response => mixed,
-  headers?: CustomHeaders,
+  headers: CustomHeaders,
 |}
 
 class ActiveStorageProvider extends React.Component<Props> {
+  static defaultProps = { headers: {} }
+
   render() {
     const {
       endpoint: { host, port, protocol },
@@ -58,26 +60,35 @@ class ActiveStorageProvider extends React.Component<Props> {
     }
   }
 
-  async _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
-    const { endpoint, multiple, headers } = this.props
-    const { path, method, attribute, model } = endpoint
-    const body = {
-      [model.toLowerCase()]: {
-        [attribute]: multiple ? signedIds : signedIds[0],
-      },
-    }
+  get _headers(): Headers {
+    const { headers } = this.props,
+      normalizedHeaders = Object.keys(headers).reduce(
+        (acc, key) => ((acc[key.toLowerCase()] = headers[key]), acc),
+        {}
+      )
 
-    const addCSRFHeader = !headers || !headers.hasOwnProperty('X-CSRF-Token')
+    return new Headers({
+      accept: 'application/json',
+      'content-type': 'application/json',
+      ...csrfHeader(),
+      ...normalizedHeaders,
+    })
+  }
+
+  async _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
+    const { endpoint, multiple } = this.props,
+      { path, method, attribute, model } = endpoint,
+      body = {
+        [model.toLowerCase()]: {
+          [attribute]: multiple ? signedIds : signedIds[0],
+        },
+      }
+
     const response = await fetch(path, {
       credentials: 'same-origin',
       method,
       body: JSON.stringify(body),
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        ...(addCSRFHeader ? csrfHeader() : {}),
-        ...headers,
-      }),
+      headers: this._headers,
     })
 
     if (!response.ok) throw response
