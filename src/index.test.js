@@ -12,7 +12,7 @@ jest.mock('DirectUploadProvider', () =>
   jest.fn(props => <div data-component="DirectUploadProvider" {...props} />)
 )
 
-const mockCSRFHeader = { 'X-CSRF-Token': 'qwertyuiop' }
+const mockCSRFHeader = { 'x-csrf-token': 'qwertyuiop' }
 jest.mock('csrfHeader', () => () => mockCSRFHeader)
 
 const endpoint = {
@@ -74,21 +74,13 @@ describe('ActiveStorageProvider', () => {
   })
 
   describe('if custom headers are provided', () => {
-    const customHeaders = { 'TEST-HEADER': 'testValue' }
+    it('merges headers indifferently', async () => {
+      const baseCustomHeaders = { 'TEST-HEADER': 'testValue' },
+        customHeaders = { ...baseCustomHeaders, 'X-CSRF-Token': 'testToken' }
 
-    beforeEach(() => {
       component = renderComponent({ headers: customHeaders })
       tree = component.toJSON()
-    })
-
-    it('hits the given endpoint with the custom headers', async () => {
       await tree.props.onSuccess(['signedId'])
-      const headers = new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        ...mockCSRFHeader,
-        ...customHeaders,
-      })
       expect(fetch).toHaveBeenCalledWith(
         endpoint.path,
         expect.objectContaining({
@@ -96,37 +88,79 @@ describe('ActiveStorageProvider', () => {
           body: JSON.stringify({
             [endpoint.model.toLowerCase()]: { avatar: 'signedId' },
           }),
-          headers,
+          headers: new Headers({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            ...customHeaders,
+          }),
+        })
+      )
+
+      const newCustomHeaders = {
+        ...baseCustomHeaders,
+        'x-csrf-token': 'testToken',
+      }
+      component = renderComponent({ headers: newCustomHeaders })
+      tree = component.toJSON()
+      await tree.props.onSuccess(['signedId'])
+      expect(fetch).toHaveBeenCalledWith(
+        endpoint.path,
+        expect.objectContaining({
+          method: endpoint.method,
+          body: JSON.stringify({
+            [endpoint.model.toLowerCase()]: { avatar: 'signedId' },
+          }),
+          headers: new Headers({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            ...customHeaders,
+          }),
+        })
+      )
+
+      component = renderComponent({ headers: baseCustomHeaders })
+      tree = component.toJSON()
+      await tree.props.onSuccess(['signedId'])
+      expect(fetch).toHaveBeenCalledWith(
+        endpoint.path,
+        expect.objectContaining({
+          method: endpoint.method,
+          body: JSON.stringify({
+            [endpoint.model.toLowerCase()]: { avatar: 'signedId' },
+          }),
+          headers: new Headers({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            ...baseCustomHeaders,
+            ...mockCSRFHeader,
+          }),
         })
       )
     })
+  })
 
-    describe('if an X-CSRF-Token is provided', () => {
-      const customHeaders = { 'X-CSRF-Token': 'testToken' }
+  describe('if no headers are provided', () => {
+    beforeEach(() => {
+      component = renderComponent()
+      tree = component.toJSON()
+    })
 
-      beforeEach(() => {
-        component = renderComponent({ headers: customHeaders })
-        tree = component.toJSON()
-      })
-
-      it('uses the provided X-CSRF-Token', async () => {
-        await tree.props.onSuccess(['signedId'])
-        const headers = new Headers({
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          ...customHeaders,
+    it('adds a CSRF token through the meta tag', async () => {
+      await tree.props.onSuccess(['signedId'])
+      expect(fetch).toHaveBeenCalledWith(
+        endpoint.path,
+        expect.objectContaining({
+          method: endpoint.method,
+          body: JSON.stringify({
+            [endpoint.model.toLowerCase()]: { avatar: 'signedId' },
+          }),
+          headers: new Headers({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            ...mockCSRFHeader,
+          }),
         })
-        expect(fetch).toHaveBeenCalledWith(
-          endpoint.path,
-          expect.objectContaining({
-            method: endpoint.method,
-            body: JSON.stringify({
-              [endpoint.model.toLowerCase()]: { avatar: 'signedId' },
-            }),
-            headers,
-          })
-        )
-      })
+      )
     })
   })
 })
