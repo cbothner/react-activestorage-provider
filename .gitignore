@@ -11,11 +11,9 @@ yarn-error.log*
 # Yarn Integrity file
 .yarn-integrity
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# Environment files
+.env
+.env.test
 
 # Optional npm cache directory
 .npm
@@ -27,5 +25,5 @@ pids
 coverage
 
 # Build Products
-/dist
+dist
 *.tgz
