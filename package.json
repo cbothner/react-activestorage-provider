@@ -20,10 +20,13 @@
   "jsnext:main": "dist/index.es.js",
   "scripts": {
     "build": "rollup -c && npm run copy-flow-types",
-    "start": "rollup -c -w",
-    "prepare": "npm run build",
-    "predeploy": "cd example && npm install && npm run build",
     "copy-flow-types": "flow-copy-source src dist",
+    "flow": "flow",
+    "predeploy": "cd example && npm install && npm run build",
+    "prepare": "npm run build",
+    "prettify": "prettier --write src/*",
+    "pull-request": "npm run prettify && npm run flow && npm run test",
+    "start": "rollup -c -w",
     "test": "jest --coverage"
   },
   "dependencies": {
