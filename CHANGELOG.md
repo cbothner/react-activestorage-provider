@@ -6,9 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.7.0] — 2019-01-03
+
 ### Changed
 
-- Removed error when CSRF meta tag does not exist
+- Removed error when CSRF meta tag does not exist. Thanks, @SampsonCrowley
 
 ## [0.6.0] — 2018-10-23
 
@@ -80,7 +82,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - A component that handles the direct upload of a file to an ActiveStorage service and calls render props with arguments that let you build your own upload widget.
 
-[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.6.0...HEAD
+[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.3.0...v0.4.0
