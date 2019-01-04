@@ -40,7 +40,7 @@ describe('Upload', () => {
     })
 
     it('reports that it is waiting to upload', () => {
-      new Upload(file, options)
+      new Upload(file, options) // eslint-disable-line no-new
 
       expect(options.onChangeFile).toHaveBeenCalledWith({
         id: { state: 'waiting', id: 'id', file },
@@ -94,7 +94,7 @@ describe('Upload', () => {
             id: 'id',
             file,
             create(cb) {
-              cb('Failed')
+              cb('Failed') // eslint-disable-line standard/no-callback-literal
             },
           })),
         }

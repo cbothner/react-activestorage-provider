@@ -39,6 +39,17 @@ class Upload {
   directUpload: ActiveStorage.DirectUpload
   options: { ...Options, ...typeof Upload.defaultOptions }
 
+  constructor(file: File, options: Options) {
+    this.options = { ...Upload.defaultOptions, ...compactObject(options) }
+    this.directUpload = new ActiveStorage.DirectUpload(
+      file,
+      this.directUploadsUrl,
+      this
+    )
+
+    this.handleChangeFile({ state: 'waiting', id: this.id, file })
+  }
+
   get id(): string {
     return `${this.directUpload.id}`
   }
@@ -59,15 +70,38 @@ class Upload {
     return directUploadsPath
   }
 
-  constructor(file: File, options: Options) {
-    this.options = { ...Upload.defaultOptions, ...compactObject(options) }
-    this.directUpload = new ActiveStorage.DirectUpload(
-      file,
-      this.directUploadsUrl,
-      this
-    )
+  handleChangeFile = (upload: ActiveStorageFileUpload) => {
+    this.options.onChangeFile({ [this.id]: upload })
+  }
 
-    this.handleChangeFile({ state: 'waiting', id: this.id, file })
+  handleProgress = ({ loaded, total }: ProgressEvent) => {
+    const progress = (loaded / total) * 100
+
+    this.handleChangeFile({
+      state: 'uploading',
+      file: this.directUpload.file,
+      id: this.id,
+      progress,
+    })
+  }
+
+  handleSuccess = (signedId: string) => {
+    this.handleChangeFile({
+      state: 'finished',
+      id: this.id,
+      file: this.directUpload.file,
+    })
+    return signedId
+  }
+
+  handleError = (error: string) => {
+    this.handleChangeFile({
+      state: 'error',
+      id: this.id,
+      file: this.directUpload.file,
+      error,
+    })
+    throw error
   }
 
   start(): Promise<string> {
@@ -118,40 +152,6 @@ class Upload {
         xhr.setRequestHeader(headerKey, headers[headerKey])
       }
     }
-  }
-
-  handleChangeFile = (upload: ActiveStorageFileUpload) => {
-    this.options.onChangeFile({ [this.id]: upload })
-  }
-
-  handleProgress = ({ loaded, total }: ProgressEvent) => {
-    const progress = (loaded / total) * 100
-
-    this.handleChangeFile({
-      state: 'uploading',
-      file: this.directUpload.file,
-      id: this.id,
-      progress,
-    })
-  }
-
-  handleSuccess = (signedId: string) => {
-    this.handleChangeFile({
-      state: 'finished',
-      id: this.id,
-      file: this.directUpload.file,
-    })
-    return signedId
-  }
-
-  handleError = (error: string) => {
-    this.handleChangeFile({
-      state: 'error',
-      id: this.id,
-      file: this.directUpload.file,
-      error,
-    })
-    throw error
   }
 }
 

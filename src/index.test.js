@@ -75,8 +75,11 @@ describe('ActiveStorageProvider', () => {
 
   describe('if custom headers are provided', () => {
     it('merges headers indifferently', async () => {
-      const baseCustomHeaders = { 'TEST-HEADER': 'testValue' },
-        customHeaders = { ...baseCustomHeaders, 'X-CSRF-Token': 'testToken' }
+      const baseCustomHeaders = { 'TEST-HEADER': 'testValue' }
+      const customHeaders = {
+        ...baseCustomHeaders,
+        'X-CSRF-Token': 'testToken',
+      }
 
       component = renderComponent({ headers: customHeaders })
       tree = component.toJSON()
