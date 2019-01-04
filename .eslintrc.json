@@ -18,44 +18,6 @@
     "sourceType": "module"
   },
 
-  "plugins": ["sort-class-members"],
-
-  "rules": {
-    "sort-class-members/sort-class-members": [
-      2,
-      {
-        "order": [
-          "[static-properties]",
-          "[static-methods]",
-          "[properties]",
-          "[conventional-private-properties]",
-          "constructor",
-          "[getters]",
-          "[conventional-private-getters]",
-          "[setters]",
-          "[conventional-private-setters]",
-          "[component-lifecycle]",
-          "[arrow-function-properties]",
-          "[methods]",
-          "[conventional-private-methods]",
-          "everything-else"
-        ],
-        "groups": {
-          "component-lifecycle": [
-            "shouldComponentUpdate",
-            "render",
-            "componentDidMount",
-            "getSnapshotBeforeUpdate",
-            "componentDidUpdate",
-            "componentWillUnmount"
-          ],
-          "conventional-private-getters": [{ "name": "/^_.+/", "kind": "get" }],
-          "conventional-private-setters": [{ "name": "/^_.+/", "kind": "set" }]
-        }
-      }
-    ]
-  },
-
   "settings": {
     "react": {
       "version": "16.x"
