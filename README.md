@@ -20,6 +20,10 @@ npm install --save react-activestorage-provider
 ActiveStorageProvider makes it easy to add a simple upload button. When you call `handleUpload` with a `FileList` or an array of `File`s, this component creates a `Blob` record, uploads the file directly to your storage service, and then hits your Rails controller to attach the blob to your model. (If you want to handle the attachment yourself, [see below](#directuploadprovider).)
 
 ```jsx
+import ActiveStorageProvider from 'react-activestorage-provider'
+
+// ...
+
 <ActiveStorageProvider
   endpoint={{
     path: '/profile',
@@ -105,6 +109,12 @@ type ActiveStorageFileUpload =
 ## `DirectUploadProvider`
 
 ActiveStorageProvider makes it simple to add a quick “upload” button by taking care of both uploading and attaching your file, but it shouldn’t stand in your way if you’re doing something more interesting. If you want to handle the second step, attaching your `Blob` record to your model, yourself, you can use the lower level `DirectUploadProvider`. It creates the blob records and uploads the user’s files directly to your storage service, then calls you back with the signed ids of those blobs.
+
+`DirectUploadProvider` is a named export, so
+```jsx
+import { DirectUploadProvider } from 'react-activestorage-provider'
+```
+and use it with the following props:
 
 | Prop (\*required)        | Description                                                                                                                             |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
