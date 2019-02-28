@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.8.0] — 2019-02-28
+
 ### Changed
 
 - ActiveStorageProvider now passes custom headers down to the DirectUploadProvider it uses. This change is to better support users who customize their DirectUploadsController, in response to [this conversation](https://github.com/cbothner/react-activestorage-provider/issues/22).
@@ -87,7 +89,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - A component that handles the direct upload of a file to an ActiveStorage service and calls render props with arguments that let you build your own upload widget.
 
-[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.7.0...HEAD
+[unreleased]: https://github.com/cbothner/react-activestorage-provider/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/cbothner/react-activestorage-provider/compare/v0.4.0...v0.5.0
