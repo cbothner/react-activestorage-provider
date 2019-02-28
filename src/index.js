@@ -48,7 +48,6 @@ class ActiveStorageProvider extends React.Component<Props> {
     const {
       endpoint: { host, port, protocol },
       onSubmit,
-      headers,
       ...props
     } = this.props
 
