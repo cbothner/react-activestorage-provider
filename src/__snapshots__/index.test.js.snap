@@ -3,6 +3,7 @@
 exports[`ActiveStorageProvider renders a DirectUploadProvider 1`] = `
 <div
   data-component="DirectUploadProvider"
+  headers={Object {}}
   onSuccess={[Function]}
   origin={
     Object {

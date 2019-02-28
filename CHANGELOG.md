@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- ActiveStorageProvider now passes custom headers down to the DirectUploadProvider it uses. This change is to better support users who customize their DirectUploadsController, in response to [this conversation](https://github.com/cbothner/react-activestorage-provider/issues/22).
+
 ## [0.7.0] — 2019-01-03
 
 ### Changed
