@@ -25,10 +25,18 @@ const onSuccess = jest.fn()
 
 const file = new File([], 'file')
 
+const uploadOptions = {
+  directUploadsPath: 'direct_uploads',
+  headers: { 'X-Custom': true },
+  onBeforeBlobRequest: jest.fn(),
+  onBeforeStorageRequest: jest.fn(),
+  origin: {},
+}
+
 function renderComponent(props) {
   return renderer.create(
     <DirectUploadProvider
-      origin={{}}
+      {...uploadOptions}
       onSuccess={onSuccess}
       render={props => <div {...props} />}
       {...props}
@@ -59,13 +67,19 @@ describe('DirectUploadProvider', () => {
 
   it('creates and starts an upload when handleUpload is called', () => {
     tree.props.handleUpload([file])
-    expect(Upload).toHaveBeenCalledWith(file, expect.any(Object))
+    expect(Upload).toHaveBeenCalledWith(
+      file,
+      expect.objectContaining(uploadOptions)
+    )
     expect(Upload.mock.results[0].value.start).toHaveBeenCalled()
   })
 
   it('creates an upload when handleChooseFiles is called', () => {
     tree.props.handleChooseFiles([file])
-    expect(Upload).toHaveBeenCalledWith(file, expect.any(Object))
+    expect(Upload).toHaveBeenCalledWith(
+      file,
+      expect.objectContaining(uploadOptions)
+    )
     expect(Upload.mock.results[0].value.start).not.toHaveBeenCalled()
   })
 

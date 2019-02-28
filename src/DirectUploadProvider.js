@@ -20,6 +20,7 @@ import type {
 } from './types'
 
 export type DelegatedProps = {|
+  directUploadsPath?: string,
   multiple?: boolean,
   onBeforeBlobRequest?: ({
     id: string,
@@ -37,7 +38,6 @@ export type DelegatedProps = {|
 type Props = {
   ...DelegatedProps,
   origin: Origin,
-  directUploadsPath?: string,
   onSuccess: (string[]) => mixed,
   headers?: CustomHeaders,
 }
@@ -105,20 +105,20 @@ class DirectUploadProvider extends React.Component<Props, State> {
 
   _createUpload(file: File) {
     const {
-      origin,
       directUploadsPath,
+      headers,
       onBeforeBlobRequest,
       onBeforeStorageRequest,
-      headers,
+      origin,
     } = this.props
 
     return new Upload(file, {
-      origin,
       directUploadsPath,
+      headers,
       onBeforeBlobRequest,
       onBeforeStorageRequest,
       onChangeFile: this.handleChangeFileUpload,
-      headers,
+      origin,
     })
   }
 }

@@ -28,7 +28,13 @@ const userData = { id: '1', avatar: 'file' }
 function renderComponent(props: Object = {}) {
   return renderer.create(
     <ActiveStorageProvider
+      directUploadsPath="direct_uploads/"
       endpoint={endpoint}
+      headers={{ 'X-Custom': true }}
+      multiple={false}
+      onBeforeBlobRequest={jest.fn()}
+      onBeforeStorageRequest={jest.fn()}
+      onError={jest.fn()}
       onSubmit={onSubmit}
       render={props => <div {...props} />}
       {...props}

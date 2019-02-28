@@ -3,7 +3,16 @@
 exports[`ActiveStorageProvider renders a DirectUploadProvider 1`] = `
 <div
   data-component="DirectUploadProvider"
-  headers={Object {}}
+  directUploadsPath="direct_uploads/"
+  headers={
+    Object {
+      "X-Custom": true,
+    }
+  }
+  multiple={false}
+  onBeforeBlobRequest={[MockFunction]}
+  onBeforeStorageRequest={[MockFunction]}
+  onError={[MockFunction]}
   onSuccess={[Function]}
   origin={
     Object {
