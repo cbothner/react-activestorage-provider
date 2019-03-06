@@ -74,6 +74,29 @@ describe('ActiveStorageProvider', () => {
     expect(onSubmit).toHaveBeenCalledWith(userData)
   })
 
+  it('transforms the body and hits the given endpoint when generateBody is present', async () => {
+    const customBody = {
+      id: 1,
+      extraField: 'mutation',
+      avatar: 'file',
+    }
+    const generateBodyFn = jest.fn(signedIds => customBody)
+    component = renderComponent({ generateBody: generateBodyFn })
+    tree = component.toJSON()
+    await tree.props.onSuccess(['signedId'])
+
+    expect(generateBodyFn).toHaveBeenCalledWith(['signedId'])
+
+    expect(fetch).toHaveBeenCalledWith(
+      endpoint.path,
+      expect.objectContaining({
+        method: endpoint.method,
+        body: JSON.stringify(customBody),
+      })
+    )
+    expect(onSubmit).toHaveBeenCalledWith(userData)
+  })
+
   it('doesn’t hit the endpoint if handleUpload is called with no files', async () => {
     await tree.props.onSuccess([])
     expect(fetch).not.toHaveBeenCalled()

@@ -24,6 +24,7 @@ type Props = {|
   onSubmit: Object => mixed,
   onError?: Response => mixed,
   headers: CustomHeaders,
+  generateBody: (signedIds: string[]) => Object,
 |}
 
 class ActiveStorageProvider extends React.Component<Props> {
@@ -72,13 +73,16 @@ class ActiveStorageProvider extends React.Component<Props> {
   }
 
   async _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
-    const { endpoint, multiple } = this.props
+    const { endpoint, multiple, generateBody } = this.props
     const { path, method, attribute, model } = endpoint
-    const body = {
+
+    let body = {
       [model.toLowerCase()]: {
         [attribute]: multiple ? signedIds : signedIds[0],
       },
     }
+
+    if (generateBody) body = generateBody(signedIds)
 
     const response = await fetch(path, {
       credentials: 'same-origin',
