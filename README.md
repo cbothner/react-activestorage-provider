@@ -17,7 +17,7 @@ npm install --save react-activestorage-provider
 
 ## Usage
 
-ActiveStorageProvider makes it easy to add a simple upload button. When you call `handleUpload` with a `FileList` or an array of `File`s, this component creates a `Blob` record, uploads the file directly to your storage service, and then hits your Rails controller to attach the blob to your model. (If you want to handle the attachment yourself, [see below](#directuploadprovider).)
+ActiveStorageProvider makes it easy to add a simple upload button. When you call `handleUpload` with a `FileList` or an array of `File`s, this component creates a `Blob` record, uploads the file directly to your storage service, and then hits your Rails controller to attach the blob to your model. (If you want to handle the attachment yourself in order to, for example, provide other attributes, [see the lower level `DirectUploadProvider`](#directuploadprovider).)
 
 ```jsx
 import ActiveStorageProvider from 'react-activestorage-provider'
@@ -113,7 +113,20 @@ type ActiveStorageFileUpload =
 
 ## `DirectUploadProvider`
 
-ActiveStorageProvider makes it simple to add a quick “upload” button by taking care of both uploading and attaching your file, but it shouldn’t stand in your way if you’re doing something more interesting. If you want to handle the second step, attaching your `Blob` record to your model, yourself, you can use the lower level `DirectUploadProvider`. It creates the blob records and uploads the user’s files directly to your storage service, then calls you back with the signed ids of those blobs.
+ActiveStorageProvider makes it simple to add a quick “upload” button by taking care of both uploading and attaching your file, but it shouldn’t stand in your way if you’re doing something more interesting. If you want to handle the second step, attaching your `Blob` record to your model, yourself, you can use the lower level `DirectUploadProvider`. It creates the blob records and uploads the user’s files directly to your storage service, then calls you back with the signed ids of those blobs. Then, you can create or update your model as you need.
+
+```jsx
+function PostForm() {
+  function handleAttachment(signedIds) {
+    const body = JSON.stringify({ post: { title: ..., images: signedIds }})
+    fetch('/posts.json', { method: 'POST', body })
+  }
+
+  return (
+    <DirectUploadProvider multiple onSuccess={handleAttachment} render={...} />
+  )
+}
+```
 
 `DirectUploadProvider` is a named export, so
 
