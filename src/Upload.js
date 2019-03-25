@@ -61,12 +61,12 @@ class Upload {
     } = this.options
 
     if (host) {
-      const builtProtocol = protocol
-        ? `${protocol.split(':')[0]}://`
-        : 'https://'
+      // Given protocol (with consistent punctuation) or same as page by default
+      const builtProtocol = protocol ? `${protocol.split(':')[0]}://` : '//'
       const builtPort = port ? `:${port}` : ''
-      return `${builtProtocol}${host}${builtPort}${directUploadsPath}`
+      return builtProtocol + host + builtPort + directUploadsPath
     }
+
     return directUploadsPath
   }
 

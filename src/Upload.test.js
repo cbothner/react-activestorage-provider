@@ -61,8 +61,8 @@ describe('Upload', () => {
       ${'http'}    | ${'0.0.0.0'} | ${3000}      | ${'http://0.0.0.0:3000/rails/active_storage/direct_uploads'}
       ${'http'}    | ${'0.0.0.0'} | ${undefined} | ${'http://0.0.0.0/rails/active_storage/direct_uploads'}
       ${'http://'} | ${'0.0.0.0'} | ${undefined} | ${'http://0.0.0.0/rails/active_storage/direct_uploads'}
-      ${undefined} | ${'0.0.0.0'} | ${3000}      | ${'https://0.0.0.0:3000/rails/active_storage/direct_uploads'}
-      ${undefined} | ${'0.0.0.0'} | ${undefined} | ${'https://0.0.0.0/rails/active_storage/direct_uploads'}
+      ${undefined} | ${'0.0.0.0'} | ${3000}      | ${'//0.0.0.0:3000/rails/active_storage/direct_uploads'}
+      ${undefined} | ${'0.0.0.0'} | ${undefined} | ${'//0.0.0.0/rails/active_storage/direct_uploads'}
     `(
       'allows the consumer to specify a different origin { protocol: $protocol, host: $host, port: $port}',
       ({ protocol, host, port, url }) => {
