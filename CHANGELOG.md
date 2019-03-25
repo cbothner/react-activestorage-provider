@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- Defaults to the same protocol as the page when host is provided but protocol is not. Previously it defaulted to https.
+
+### Fixed
+
+- Uses provided protocol, host, and port props in the attachment step. Previously they were only used when uploading
+
 ## [0.8.0] — 2019-02-28
 
 ### Changed

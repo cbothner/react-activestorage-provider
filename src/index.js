@@ -14,6 +14,7 @@ import * as React from 'react'
 
 import DirectUploadProvider from './DirectUploadProvider'
 import csrfHeader from './csrfHeader'
+import { buildUrl } from './helpers'
 
 import type { DelegatedProps } from './DirectUploadProvider'
 import type { Endpoint, CustomHeaders } from './types'
@@ -73,14 +74,14 @@ class ActiveStorageProvider extends React.Component<Props> {
 
   async _hitEndpointWithSignedIds(signedIds: string[]): Promise<Object> {
     const { endpoint, multiple } = this.props
-    const { path, method, attribute, model } = endpoint
+    const { protocol, host, port, path, method, attribute, model } = endpoint
     const body = {
       [model.toLowerCase()]: {
         [attribute]: multiple ? signedIds : signedIds[0],
       },
     }
 
-    const response = await fetch(path, {
+    const response = await fetch(buildUrl({ protocol, host, port, path }), {
       credentials: 'same-origin',
       method,
       body: JSON.stringify(body),
