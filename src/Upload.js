@@ -25,6 +25,7 @@ type Options = {|
   }) => mixed,
   onChangeFile: ({ [string]: ActiveStorageFileUpload }) => mixed,
   headers?: CustomHeaders,
+  fullAttributes?: boolean,
 |}
 
 class Upload {
@@ -108,7 +109,10 @@ class Upload {
     const promise = new Promise((resolve, reject) => {
       this.directUpload.create((error, attributes) => {
         if (error) reject(error)
-        else resolve(attributes.signed_id)
+        else {
+          let result = this.options.fullAttributes ? attributes : attributes.signed_id
+          resolve(result)
+        }
       })
     })
 
