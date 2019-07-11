@@ -33,12 +33,13 @@ export type DelegatedProps = {|
     xhr: XMLHttpRequest,
   }) => mixed,
   render: RenderProps => React.Node,
+  fullAttributes?: boolean,
 |}
 
 type Props = {
   ...DelegatedProps,
   origin: Origin,
-  onSuccess: (string[]) => mixed,
+  onSuccess: (any[]) => mixed,
   headers?: CustomHeaders,
 }
 
@@ -87,11 +88,11 @@ class DirectUploadProvider extends React.Component<Props, State> {
 
     this.setState({ uploading: true })
 
-    const signedIds = await Promise.all(
+    const resultArr = await Promise.all(
       this.uploads.map(upload => upload.start())
     )
 
-    this.props.onSuccess(signedIds)
+    this.props.onSuccess(resultArr)
     this.uploads = []
     this.setState({ fileUploads: {}, uploading: false })
   }
@@ -110,6 +111,7 @@ class DirectUploadProvider extends React.Component<Props, State> {
       onBeforeBlobRequest,
       onBeforeStorageRequest,
       origin,
+      fullAttributes,
     } = this.props
 
     return new Upload(file, {
@@ -119,6 +121,7 @@ class DirectUploadProvider extends React.Component<Props, State> {
       onBeforeStorageRequest,
       onChangeFile: this.handleChangeFileUpload,
       origin,
+      fullAttributes,
     })
   }
 }

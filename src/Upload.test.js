@@ -10,7 +10,7 @@ jest.mock('activestorage', () => {
       id: 'id',
       file,
       create(cb) {
-        cb(null, { signed_id: 'signedId' })
+        cb(null, { signed_id: 'signedId', key: 'key' })
       },
     })),
   }
@@ -77,6 +77,11 @@ describe('Upload', () => {
     it('resolves with the signed id from the direct upload', async () => {
       const upload = new Upload(file, options)
       expect(await upload.start()).toEqual('signedId')
+    })
+
+    it('resolves with fullAttributes from the direct upload when option "fullAttributes" is true', async () => {
+      const upload = new Upload(file, { ...options, fullAttributes: true })
+      expect(await upload.start()).toEqual({ signed_id: 'signedId', key: 'key' })
     })
 
     it('reports that the upload is finished if it does so', async () => {
