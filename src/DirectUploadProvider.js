@@ -33,12 +33,13 @@ export type DelegatedProps = {|
     xhr: XMLHttpRequest,
   }) => mixed,
   render: RenderProps => React.Node,
+  fullAttributes?: boolean,
 |}
 
 type Props = {
   ...DelegatedProps,
   origin: Origin,
-  onSuccess: (string[]) => mixed,
+  onSuccess: (any[]) => mixed,
   headers?: CustomHeaders,
 }
 
