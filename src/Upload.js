@@ -91,7 +91,6 @@ class Upload {
       file: this.directUpload.file,
       error,
     })
-    throw error
   }
 
   start(): Promise<string> {
